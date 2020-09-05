@@ -1,0 +1,91 @@
+{
+ "autoname": "SA.######",
+ "creation": "2020-09-01 22:12:05.494475",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "shareholder_name",
+  "available_balance",
+  "column_break_3",
+  "currency",
+  "section_break_5",
+  "deposit_operations",
+  "withdrawals_section",
+  "withdrawal_operations"
+ ],
+ "fields": [
+  {
+   "fieldname": "shareholder_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Shareholder Name",
+   "options": "Shareholder",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "available_balance",
+   "fieldtype": "Currency",
+   "label": "Available Balance",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break",
+   "label": "Deposits section"
+  },
+  {
+   "fieldname": "deposit_operations",
+   "fieldtype": "Table",
+   "label": "Deposit Operations",
+   "options": "Deposit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "withdrawals_section",
+   "fieldtype": "Section Break",
+   "label": "Withdrawals"
+  },
+  {
+   "fieldname": "withdrawal_operations",
+   "fieldtype": "Table",
+   "label": "Withdrawal Operations",
+   "options": "Withdrawal"
+  }
+ ],
+ "modified": "2020-09-03 20:28:44.263304",
+ "modified_by": "Administrator",
+ "module": "Shareholders",
+ "name": "Shareholder Account",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

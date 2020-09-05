@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include shareholders_management *.css
+recursive-include shareholders_management *.csv
+recursive-include shareholders_management *.html
+recursive-include shareholders_management *.ico
+recursive-include shareholders_management *.js
+recursive-include shareholders_management *.json
+recursive-include shareholders_management *.md
+recursive-include shareholders_management *.png
+recursive-include shareholders_management *.py
+recursive-include shareholders_management *.svg
+recursive-include shareholders_management *.txt
+recursive-exclude shareholders_management *.pyc

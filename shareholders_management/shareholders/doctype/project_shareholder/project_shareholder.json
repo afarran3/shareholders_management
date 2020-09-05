@@ -1,0 +1,77 @@
+{
+ "autoname": "PS.#########",
+ "creation": "2020-09-02 21:43:47.576240",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "shareholder_name",
+  "amount",
+  "column_break_4",
+  "account",
+  "ratio",
+  "description_section",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "shareholder_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Name",
+   "options": "Shareholder",
+   "reqd": 1
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Account",
+   "options": "Shareholder Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "label": "Amount",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ratio",
+   "fieldtype": "Float",
+   "in_preview": 1,
+   "label": "Ratio",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Long Text",
+   "label": "Description"
+  }
+ ],
+ "istable": 1,
+ "modified": "2020-09-03 21:33:52.383029",
+ "modified_by": "Administrator",
+ "module": "Shareholders",
+ "name": "Project Shareholder",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
