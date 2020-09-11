@@ -6,10 +6,12 @@
  "engine": "InnoDB",
  "field_order": [
   "shareholder_name",
-  "amount",
-  "column_break_4",
   "account",
+  "amount_after_sale",
+  "column_break_4",
+  "amount",
   "ratio",
+  "check",
   "description_section",
   "description"
  ],
@@ -33,6 +35,8 @@
    "reqd": 1
   },
   {
+   "columns": 2,
+   "default": "0",
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -43,7 +47,8 @@
   {
    "default": "0",
    "fieldname": "ratio",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
+   "in_list_view": 1,
    "in_preview": 1,
    "label": "Ratio",
    "read_only": 1
@@ -61,10 +66,23 @@
    "fieldname": "description",
    "fieldtype": "Long Text",
    "label": "Description"
+  },
+  {
+   "fieldname": "check",
+   "fieldtype": "Button",
+   "in_preview": 1,
+   "label": "Check Amount"
+  },
+  {
+   "fieldname": "amount_after_sale",
+   "fieldtype": "Currency",
+   "label": "Amount After Sale",
+   "precision": "4",
+   "read_only": 1
   }
  ],
  "istable": 1,
- "modified": "2020-09-03 21:33:52.383029",
+ "modified": "2020-09-10 20:43:59.964458",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project Shareholder",

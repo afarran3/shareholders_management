@@ -9,22 +9,30 @@
   "unit",
   "number_of_units",
   "ratio_type",
+  "stock_value",
+  "company_ratio",
+  "company_profit",
+  "is_amounts_deducted",
+  "sold",
   "column_break_4",
   "start_date",
+  "end_date",
   "unit_cost",
   "currency",
-  "ratio_value",
   "total_cost",
+  "total_shareholding_amount",
+  "sale_amount",
+  "company_name",
   "project_shareholders_section",
   "project_shareholder",
   "description_section",
-  "description"
+  "description",
+  "amended_from"
  ],
  "fields": [
   {
    "fieldname": "project_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Project Name",
    "reqd": 1,
    "unique": 1
@@ -57,6 +65,7 @@
   {
    "fieldname": "total_cost",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Total Cost",
    "read_only": 1
   },
@@ -66,6 +75,7 @@
    "label": "Description"
   },
   {
+   "columns": 4,
    "fieldname": "project_shareholder",
    "fieldtype": "Table",
    "label": "Project Shareholders",
@@ -99,13 +109,79 @@
    "default": "0",
    "depends_on": "eval:doc.ratio_type == 'Stock'",
    "description": "To change stock value go to settings.",
-   "fieldname": "ratio_value",
+   "fieldname": "stock_value",
    "fieldtype": "Float",
-   "label": "Ratio Value",
+   "label": "Stock Value",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_shareholding_amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Shareholding Amount",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_amounts_deducted",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Is Amounts Deducted"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Project",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.sold == 1",
+   "fieldname": "company_ratio",
+   "fieldtype": "Float",
+   "label": "Company Ratio",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "sold",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "in_standard_filter": 1,
+   "label": "Sold"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.sold == 1",
+   "fieldname": "company_profit",
+   "fieldtype": "Currency",
+   "label": "Company Profit",
+   "precision": "4",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.sold == 1",
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.sold == 1",
+   "fieldname": "sale_amount",
+   "fieldtype": "Currency",
+   "label": "Sale Amount",
    "read_only": 1
   }
  ],
- "modified": "2020-09-03 21:31:20.844078",
+ "modified": "2020-09-11 19:52:24.557309",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",

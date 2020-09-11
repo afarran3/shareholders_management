@@ -12,12 +12,12 @@
    "fieldname": "shareholder_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Shareholder name",
+   "label": "Shareholder Name",
    "reqd": 1,
    "unique": 1
   }
  ],
- "modified": "2020-09-01 22:08:45.089009",
+ "modified": "2020-09-11 19:48:53.508032",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Shareholder",

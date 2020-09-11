@@ -5,13 +5,16 @@
  "engine": "InnoDB",
  "field_order": [
   "amount",
+  "deposit_type",
   "column_break_2",
   "deposit_date",
+  "project",
   "section_break_4",
   "description"
  ],
  "fields": [
   {
+   "default": "0",
    "fieldname": "amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -40,10 +43,26 @@
   {
    "fieldname": "section_break_4",
    "fieldtype": "Section Break"
+  },
+  {
+   "default": "Normal",
+   "fieldname": "deposit_type",
+   "fieldtype": "Select",
+   "label": "Deposit Type",
+   "options": "Projects profits\nProjects proceeds\nNormal",
+   "set_only_once": 1
+  },
+  {
+   "depends_on": "eval: doc.deposit_type != 'Normal'",
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project",
+   "set_only_once": 1
   }
  ],
  "istable": 1,
- "modified": "2020-09-02 20:55:32.013213",
+ "modified": "2020-09-10 01:41:25.060517",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Deposit",

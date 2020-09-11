@@ -1,0 +1,98 @@
+Doctype: Project,Project,مشروع
+,Shareholders Management,نظام إدارة المساهمين
+,Projects,المشاريع
+,Shareholders,المساهمين
+,Project Name,إسم المشروع
+,Is Amounts Deducted,تم خصم مبالغ المساهمين
+,Start Date,تاريخ الشراء
+,Currency,العملة
+,Check Amount,إستعلام عن الرصيد
+,Amount After Sale,المبلغ بعد البيع
+,Unit Type,نوع الوحدة
+,Number of Units,عدد الوحدات
+,Shareholders Ratio Type,نوع النسبة للمساهمين
+,Select how to calculate shareholders ratio,إختر طريقة إحتساب نِسَب المساهمين
+,Stock Value,قيمة السهم
+,To change stock value go to settings.,لتغيير قيمة السهم إذهب إلى إعدادات المشروع
+,Company Ratio,نسبة الشركة
+,Company Profit,أرباح الشركة
+,Sold,تم البيع
+,Unit Cost,تكلفة الوحدة
+,Total Cost,إجمالي التكلفة
+,Total Shareholding Amount,إجمالي المبلغ المُساهَم به
+,Sale Amount,مبلغ البيع
+,Project Shareholders,المساهمين في المشروع
+,Account,الحساب
+,Amount,المبلغ
+,Ratio,النسبة
+,Sale,بيع
+,Sync accounts,مزامنة حسابات المساهمين
+,"Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!","يرجى إضافة مساهمين آخرين أو زيادة مبالغ المساهمين الحاليين حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة للمشروع !!"
+,"Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!","يرجى حذف بعض المساهمين أو تقليل المبالغ المساهم بها حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة !!"
+,"This will deduct shareholders' amounts from thire accounts, Are you sure !!","سوف يتم خصم المبالغ من حسابات المساهمين, هل تريد التقدم ؟!!"
+,"Shareholders' accounts have been deducted successfully.","تم خصم المبالغ من حسابات المساهمين بنجاح."
+,"There is no shareholders for this project yet !!","ليس هناك مساهمين في هذا المشروع بعد."
+,"You have not deducted the amounts from Shareholders' accounts yet !!","لم يتم خصم المبالغ من حسابات المساهمين بعد."
+,"Company Ratio ({0})","نسبة الشركة ({0})"
+,Sale Amount,تكلفة البيع
+,Sale Date,تاريخ البيع
+,Sale Informations,معلومات ماقبل البيع
+,Stock,أسهم
+,Percentage,مئوية
+,Number of stocks,عدد الأسهم
+,"Percentage ratio (%)","النسبة المئوية (%)"
+,"There is no stock value in this currency, to set it go to 'Project Settings' !!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها !!"
+,"Please set a stock values first in 'Project Settings' !!","يرجى إعداد قيمة السهم في صفحة 'إعدادات المشاريع'."
+,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
+,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
+,"Please set a company name in 'Project Settings' first !!","يرجى إعداد إسم الشركة في صفحة 'إعدادات المشروع' أولاً !!"
+,"{0}'s available balance = {1} {2}.","الرصيد المتاح لـ {0} = {1} {2}."
+,"Please select an account first !!","قم بإختيار حساب أولاً !!"
+,"Please select a shareholder first !!","قم بإختيار مساهم أولاً !!"
+,"Please insert Unit Type, Unit Cost and Number of Units First !!","قم بإدخال نوع الوحدة وتكلفة الوحدة وعدد الوحدات أولاً !!"
+,"{0} does not have {1} {2} in his account !! his available balance = {3} {4}.","{0} لا يملك {1} {2} في حسابه !! رصيدة المتاح = {3} {4}." 
+,"In exchange for contributing in {0}.","مقابل المساهمة في {0}."
+,"In exchange for the company's share of the profits of the project {0}.","مقابل نصيب الشركة من أرباح المشروع: {0}."
+,"In exchange for the shareholder's share of the profits of the project {0}.","مقابل نصيب المساهم من أرباح المشروع: {0}. "
+,"In exchange for the shareholder's share of the loss of the project {0}.","مقابل نصيب المساهم من خسائر المشروع: {0}."
+,"In exchange for shareholding in the project {0}.","مقابل المساهمة في المشروع: {0}."
+
+Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع
+
+Doctype: Shareholder Account,Shareholder Account,حساب المساهم
+,Shareholder Name,إسم المساهم
+,Currency,العملة
+,Available Balance,الرصيد المتاح
+,Deposits,الإيداعات
+,Deposit Operations,عمليات الإيداع
+,Withdrawals,المسحوبات
+,Withdrawal Operations,عمليات السحب
+,Withdrawal Date,تاريخ السحب
+,Withdrawal Type,نوع السحب
+,Deposit Type,نوع الإيداع
+,Deposit Date,تاريخ الإيداع
+,Projects profits,أرباح مشاريع
+,Projects proceeds,عائدات مشاريع
+,Normal,عادي
+,Projects Shareholdings,مساهمة في مشاريع
+,Projects losses,خسائر مشاريع
+,Is Company,المالك شركة
+,"You have exceeded the available balance, you can't withdraw more than {0} !!",
+,"This date {0} has not come yet !!",
+,"{0} already has account in {1} currency !!",
+,"Balance can not be less than ZERO !!",
+,"{0}'s available balance = {1} {2}",
+
+
+Doctype: Shareholder,Shareholder,مساهم
+
+
+Doctype: Project Settings,Project Settings,إعدادات المشاريع
+,Company Name,إسم الشركة
+,Stock Values,قيم الأسهم
+,Stock Value,قيمة السهم
+,Value,القيمة
+,Unit Name,تسمية الوحدة
+,Units Types,أنواع الوحدات
+,Move,تحريك
+,Shareholders Accounts,حسابات المساهمين

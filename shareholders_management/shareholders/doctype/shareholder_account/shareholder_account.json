@@ -9,6 +9,7 @@
   "available_balance",
   "column_break_3",
   "currency",
+  "is_company",
   "section_break_5",
   "deposit_operations",
   "withdrawals_section",
@@ -28,6 +29,7 @@
    "default": "0",
    "fieldname": "available_balance",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Available Balance",
    "read_only": 1
   },
@@ -45,7 +47,7 @@
   {
    "fieldname": "section_break_5",
    "fieldtype": "Section Break",
-   "label": "Deposits section"
+   "label": "Deposits"
   },
   {
    "fieldname": "deposit_operations",
@@ -55,6 +57,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval: !doc.__islocal",
    "fieldname": "withdrawals_section",
    "fieldtype": "Section Break",
    "label": "Withdrawals"
@@ -64,9 +67,17 @@
    "fieldtype": "Table",
    "label": "Withdrawal Operations",
    "options": "Withdrawal"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_company",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Is Company",
+   "read_only": 1
   }
  ],
- "modified": "2020-09-03 20:28:44.263304",
+ "modified": "2020-09-11 20:02:18.678769",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Shareholder Account",
