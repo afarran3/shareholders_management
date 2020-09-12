@@ -52,7 +52,7 @@ frappe.ui.form.on('Project', {
                 });
               })
           }
-        });
+        }).toggleClass('btn-primary');
       }
 
       if (frm.doc.is_amounts_deducted && !frm.doc.sold) {
@@ -115,7 +115,7 @@ frappe.ui.form.on('Project', {
             });
 
           }, __("Sale Informations"));
-        });
+        }).toggleClass('btn-primary');
       }
     }
   },
