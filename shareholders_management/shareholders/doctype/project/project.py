@@ -30,11 +30,11 @@ def get_shareholder_available_balance(account):
 @frappe.whitelist()
 def submit_shareholdedrs_withdrawal(project_name, start_date):
 	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount"])
-	print("++++++++++++")
+	# print("++++++++++++")
 	if shareholders_array:
-		print("==============")
+		# print("==============")
 		for i in shareholders_array:
-			print(i)
+			# print(i)
 			doc = frappe.get_doc("Shareholder Account", i.account)
 			description = _("In exchange for contributing in {0}.").format(project_name)
 			insert_into_withdrawal_table(doc, i.amount, start_date, "Projects Shareholdings", project_name, description)
@@ -67,22 +67,23 @@ def submit_shareholdedrs_deposit(project_name, company_name, company_profit, cur
 	else:
 		for i in company_account:
 			doc = frappe.get_doc('Shareholder Account', i.name)
-			print(doc.available_balance)
-			print(company_profit)
+			# print(doc.available_balance)
+			# print(company_profit)
 			doc.available_balance = doc.available_balance + flt(company_profit)
 			insert_into_deposit_table(doc, company_profit, end_date, "Projects profits", project_name, description)
 			doc.save()
 	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount", "amount_after_sale"])
-	print("++++++++++++")
+	# print("++++++++++++")
 	if shareholders_array:
-		print("==============")
+		# print("==============")
+		# print(shareholders_array)
 		for i in shareholders_array:
-			print(i)
+			# print(i)
 			available_balance = 0
 			doc = frappe.get_doc("Shareholder Account", i.account)
 			if i.amount_after_sale > i.amount:
 				profit = i.amount_after_sale - i.amount
-				description = _("In exchange for profits of contributing in project {0}.").format(project_name)
+				description = _("In exchange for the shareholder's share of the profits of the project {0}.").format(project_name)
 				insert_into_deposit_table(doc, profit, end_date, "Projects profits", project_name, description)
 				available_balance = doc.available_balance + profit
 			elif i.amount_after_sale < i.amount:

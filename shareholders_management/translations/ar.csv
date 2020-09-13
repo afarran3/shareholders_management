@@ -27,13 +27,13 @@ Doctype: Project,Project,مشروع
 ,Ratio,النسبة
 ,Sale,بيع
 ,Sync accounts,مزامنة حسابات المساهمين
-,"Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!","يرجى إضافة مساهمين آخرين أو زيادة مبالغ المساهمين الحاليين حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة للمشروع !!"
-,"Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!","يرجى حذف بعض المساهمين أو تقليل المبالغ المساهم بها حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة !!"
-,"This will deduct shareholders' amounts from thire accounts, Are you sure !!","سوف يتم خصم المبالغ من حسابات المساهمين, هل تريد التقدم ؟!!"
+,"Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!","يرجى إضافة مساهمين آخرين أو زيادة مبالغ المساهمين الحاليين حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة للمشروع!!"
+,"Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!","يرجى حذف بعض المساهمين أو تقليل المبالغ المساهم بها حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة!!"
+,"This will deduct shareholders' amounts from thire accounts, Are you sure!!","سوف يتم خصم المبالغ من حسابات المساهمين, هل تريد التقدم ؟!!"
 ,"Shareholders' accounts have been deducted successfully.","تم خصم المبالغ من حسابات المساهمين بنجاح."
-,"There is no shareholders for this project yet !!","ليس هناك مساهمين في هذا المشروع بعد."
-,"You have not deducted the amounts from Shareholders' accounts yet !!","لم يتم خصم المبالغ من حسابات المساهمين بعد."
-,"Company Ratio ({0})","نسبة الشركة ({0})"
+,"There is no shareholders for this project yet!!","ليس هناك مساهمين في هذا المشروع بعد."
+,"You have not deducted the amounts from Shareholders' accounts yet!!","لم يتم خصم المبالغ من حسابات المساهمين بعد."
+,"Company Ratio (Percentage ratio (%))","نسبة الشركة (النسبة المئوية (%))"
 ,Sale Amount,تكلفة البيع
 ,Sale Date,تاريخ البيع
 ,Sale Informations,معلومات ماقبل البيع
@@ -41,21 +41,25 @@ Doctype: Project,Project,مشروع
 ,Percentage,مئوية
 ,Number of stocks,عدد الأسهم
 ,"Percentage ratio (%)","النسبة المئوية (%)"
-,"There is no stock value in this currency, to set it go to 'Project Settings' !!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها !!"
-,"Please set a stock values first in 'Project Settings' !!","يرجى إعداد قيمة السهم في صفحة 'إعدادات المشاريع'."
+,"There is no stock value in this currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
+,"Please set a stock values first in 'Project Settings'!!","يرجى إعداد قيمة السهم في صفحة 'إعدادات المشاريع'."
 ,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
 ,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
-,"Please set a company name in 'Project Settings' first !!","يرجى إعداد إسم الشركة في صفحة 'إعدادات المشروع' أولاً !!"
-,"{0}'s available balance = {1} {2}.","الرصيد المتاح لـ {0} = {1} {2}."
-,"Please select an account first !!","قم بإختيار حساب أولاً !!"
-,"Please select a shareholder first !!","قم بإختيار مساهم أولاً !!"
-,"Please insert Unit Type, Unit Cost and Number of Units First !!","قم بإدخال نوع الوحدة وتكلفة الوحدة وعدد الوحدات أولاً !!"
-,"{0} does not have {1} {2} in his account !! his available balance = {3} {4}.","{0} لا يملك {1} {2} في حسابه !! رصيدة المتاح = {3} {4}." 
+,"Please set a company name in 'Project Settings' first!!","يرجى إعداد إسم الشركة في صفحة 'إعدادات المشاريع' أولاً!!"
+,"{0}'s available balance = {1}.","الرصيد المتاح لـ {0} = {1}."
+,"Please select an account first!!","قم بإختيار حساب أولاً!!"
+,"Please select a shareholder first!!","قم بإختيار مساهم أولاً!!"
+,"Please insert Unit Type, Unit Cost and Number of Units First!!","قم بإدخال نوع الوحدة وتكلفة الوحدة وعدد الوحدات أولاً!!"
+,"{0} does not have {1} in his account!! his available balance = {2}.","{0} لا يملك {1} في حسابه!! رصيدة المتاح = {2}."
 ,"In exchange for contributing in {0}.","مقابل المساهمة في {0}."
 ,"In exchange for the company's share of the profits of the project {0}.","مقابل نصيب الشركة من أرباح المشروع: {0}."
 ,"In exchange for the shareholder's share of the profits of the project {0}.","مقابل نصيب المساهم من أرباح المشروع: {0}. "
 ,"In exchange for the shareholder's share of the loss of the project {0}.","مقابل نصيب المساهم من خسائر المشروع: {0}."
 ,"In exchange for shareholding in the project {0}.","مقابل المساهمة في المشروع: {0}."
+,"Submit","تأكيد"
+,Duplicate,تكرار
+,"Refreshing...","تحديث..."
+
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع
 
@@ -77,12 +81,11 @@ Doctype: Shareholder Account,Shareholder Account,حساب المساهم
 ,Projects Shareholdings,مساهمة في مشاريع
 ,Projects losses,خسائر مشاريع
 ,Is Company,المالك شركة
-,"You have exceeded the available balance, you can't withdraw more than {0} !!",
-,"This date {0} has not come yet !!",
-,"{0} already has account in {1} currency !!",
-,"Balance can not be less than ZERO !!",
-,"{0}'s available balance = {1} {2}",
-
+,"You have exceeded the available balance, you can't withdraw more than {0}!!","لقد تجاوزت الرصيد المتاح, لا يمكنك سحب أكثر من {0}!!"
+,"This date {0} has not come yet!!","لا يمكنك إختيار تاريخ مستقبلي لم يأتي بعد!!"
+,"{0} already has account in {1} currency!!","{0} لديه حالياً حساباً بالعملة {1}!!"
+,"Balance can not be less than ZERO!!","لا يمكن أن يكون الرصيد أقل من صفر (بالسالب)!!"
+,"{0}'s available balance = {1} {2}.","الرصيد المتاح لـ {0} = {1} {2}."
 
 Doctype: Shareholder,Shareholder,مساهم
 

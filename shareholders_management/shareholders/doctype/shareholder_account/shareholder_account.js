@@ -1,7 +1,10 @@
 // Copyright (c) 2020, Ahmad Al-Farran and contributors
 // For license information, please see license.txt
 var projects = [];
+var currency = "USD";
+
 frappe.ui.form.on('Shareholder Account', {
+
   refresh: function(frm) {
     if(!frm.doc.is_company){
       frm.set_query('project', 'withdrawal_operations', function(doc, cdt, cdn) {
@@ -13,7 +16,6 @@ frappe.ui.form.on('Shareholder Account', {
           }
         }
       });
-
       frm.set_query('project', 'deposit_operations', function(doc, cdt, cdn) {
         return {
           query: "shareholders_management.shareholders.doctype.shareholder_account.shareholder_account.get_shareholder_projects",
@@ -50,7 +52,17 @@ frappe.ui.form.on('Shareholder Account', {
 
   },
 
+  fmt_money: (frm, amount) => {
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: frm.doc.currency
+    });
+    return formatter.format(amount).bold();
+  },
+
   get_available_balance: (frm, cdt, cdn) => {
+
+    // formatter.format(2500);
     var row = frm.selected_doc;
     var total_deposits = 0;
     var total_withdrawals = 0;
@@ -75,8 +87,9 @@ frappe.ui.form.on('Shareholder Account', {
       frappe.model.set_value(cdt, cdn, "amount", 0);
       var tbl = frm.doc.withdrawal_operations || [];
       frm.events.remove_row(frm, tbl, "withdrawal_operations");
-      frappe.throw(__("You have exceeded the available balance, you can't withdraw more than {0} !!",
-      [available_balance + withdrawal_amount]))
+      currency = frm.doc.currency;
+      frappe.throw(__("You have exceeded the available balance, you can't withdraw more than {0}!!",
+      [frm.events.fmt_money(frm, available_balance + withdrawal_amount)]))
     }
   },
 
@@ -97,7 +110,7 @@ frappe.ui.form.on('Shareholder Account', {
         "project": project,
         "shareholder_name": shareholder_name
       }).then( r => {
-        console.log(r);
+        // console.log(r);
         var child = locals[cdt][cdn];
         frappe.model.set_value(cdt, cdn, 'amount', r);
       });
@@ -128,7 +141,7 @@ frappe.ui.form.on("Withdrawal", {
     if (row.withdrawal_date > frappe.datetime.get_today()){
       var date = row.withdrawal_date;
       frappe.model.set_value(cdt, cdn, "withdrawal_date", undefined);
-      frappe.throw(__("This date {0} has not come yet !!",[date.bold()]))
+      frappe.throw(__("This date {0} has not come yet!!",[date.bold()]))
     }
   },
 
@@ -151,7 +164,7 @@ frappe.ui.form.on("Deposit", {
     if (row.deposit_date > frappe.datetime.get_today()){
       var date = row.deposit_date;
       frappe.model.set_value(cdt, cdn, "deposit_date", undefined);
-      frappe.throw(__("This date {0} has not come yet !!",[date.bold()]))
+      frappe.throw(__("This date {0} has not come yet!!",[date.bold()]))
     }
   },
 

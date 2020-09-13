@@ -16,14 +16,14 @@ frappe.ui.form.on('Project', {
       if (!frm.doc.is_amounts_deducted) {
         frm.add_custom_button(__("Sync accounts"), () => {
           if (frm.doc.total_cost > frm.doc.total_shareholding_amount) {
-            frappe.throw(__("Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!"))
+            frappe.throw(__("Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
           } else if (frm.doc.total_cost < frm.doc.total_shareholding_amount) {
-            frappe.throw(__("Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project !!"))
+            frappe.throw(__("Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
           } else {
             frappe.confirm(
-              __("This will deduct shareholders' amounts from thire accounts, Are you sure !!"),
+              __("This will deduct shareholders' amounts from thire accounts, Are you sure!!"),
               function() {
-                console.log(frm.doc.project_shareholder);
+                // console.log(frm.doc.project_shareholder);
                 if (frm.doc.project_shareholder) {
                   frappe.xcall('shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_withdrawal', {
                     "project_name": frm.doc.project_name,
@@ -38,7 +38,7 @@ frappe.ui.form.on('Project', {
                       frm.save();
                     } else {
                       frappe.show_alert({
-                        message: __("There is no shareholders for this project yet !!"),
+                        message: __("There is no shareholders for this project yet!!"),
                         indicator: 'red'
                       });
                     }
@@ -47,7 +47,7 @@ frappe.ui.form.on('Project', {
               },
               function() {
                 frappe.show_alert({
-                  message: __("You have not deducted the amounts from Shareholders' accounts yet !!"),
+                  message: __("You have not deducted the amounts from Shareholders' accounts yet!!"),
                   indicator: 'red'
                 });
               })
@@ -60,7 +60,7 @@ frappe.ui.form.on('Project', {
           frappe.prompt([{
               fieldname: "company_ratio",
               fieldtype: "Float",
-              label: __("Company Ratio ({0})",[label_value]),
+              label: __("Company Ratio (Percentage ratio (%))"),
               reqd: 1
             },
             {
@@ -80,66 +80,25 @@ frappe.ui.form.on('Project', {
             frm.doc.company_ratio = data.company_ratio;
             frm.refresh_fields("company_ratio");
             frm.events.calc_ratio(frm, data.sale_amount, data.company_ratio);
-            console.log(data.company_ratio);
-            console.log(frm.doc.sold);
-            frappe.call({
-              method: "shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_deposit",
-              args: {
-                project_name: frm.doc.project_name,
-                company_name: frm.doc.company_name,
-                company_profit: frm.doc.company_profit,
-                currency: frm.doc.currency,
-                end_date: data.sale_date
-              },
-              callback: function(r) {
-                frappe.call({
-                  method: "shareholders_management.shareholders.doctype.project.project.get_doc",
-                  args: {
-                    doc: doc,
-                    name: frm.doc.name
-                  },
-                  callback: function(r) {
-                    frappe.call({
-                      "method": "frappe.client.submit",
-                      "args": {
-                        "doc": r.message
-                      },
-                      callback: function(r) {
-                        frm.save();
-
-                      }
-                    })
-                  }
-                });
-              }
-            });
-
+            // console.log("frm.doc.sold = " + frm.doc.sold);
+            frm.save('Submit');
+            setTimeout(function(){
+              frappe.call({
+                method: "shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_deposit",
+                args: {
+                  project_name: frm.doc.project_name,
+                  company_name: frm.doc.company_name,
+                  company_profit: frm.doc.company_profit,
+                  currency: frm.doc.currency,
+                  end_date: data.sale_date
+                },
+                callback: function(r) {}
+              });
+            }, 600);
           }, __("Sale Informations"));
         }).toggleClass('btn-primary');
-      }
-    }
-  },
 
-  calc_ratio: (frm, sale_amount, company_ratio) => {
-
-    var profit = sale_amount - frm.doc.total_cost;
-    var stock_number = (frm.doc.total_cost / frm.doc.stock_value) + company_ratio;
-    var ps = frm.doc.project_shareholder;
-    if (frm.doc.ratio_type == "Stock") {
-      for (var i = 0; i < ps.length; i++) {
-        ps[i].amount_after_sale = ((profit / stock_number) * ps[i].ratio) + ps[i].amount
       }
-      frm.refresh_fields("project_shareholder");
-      frm.doc.company_profit = (profit / stock_number) * company_ratio
-      frm.refresh_fields("company_profit");
-    } else {
-      frm.doc.company_profit = ((company_ratio / 100) * profit)
-      frm.refresh_fields("company_profit");
-      profit = profit - frm.doc.company_profit
-      for (var i = 0; i < ps.length; i++) {
-        ps[i].amount_after_sale = ((ps[i].ratio / 100) * profit) + ps[i].amount
-      }
-      frm.refresh_fields("project_shareholder");
     }
   },
 
@@ -203,6 +162,33 @@ frappe.ui.form.on('Project', {
     }
   },
 
+  calc_ratio: (frm, sale_amount, company_ratio) => {
+    var profit = sale_amount - frm.doc.total_cost;
+    var stock_number = frm.doc.total_cost / frm.doc.stock_value;
+    var ps = frm.doc.project_shareholder;
+    if (company_ratio > 0){
+      frm.doc.company_profit = ((company_ratio / 100) * profit);
+      frm.refresh_fields("company_profit");
+    }
+    else {
+      frm.doc.company_profit = 0;
+      frm.refresh_fields("company_profit");
+    }
+    profit = profit - frm.doc.company_profit;
+    if (frm.doc.ratio_type == "Stock") {
+      for (var i = 0; i < ps.length; i++) {
+        ps[i].amount_after_sale = ((profit / stock_number) * ps[i].ratio) + ps[i].amount
+      }
+      frm.refresh_fields("project_shareholder");
+    }
+    else {
+      for (var i = 0; i < ps.length; i++) {
+        ps[i].amount_after_sale = ((ps[i].ratio / 100) * profit) + ps[i].amount
+      }
+      frm.refresh_fields("project_shareholder");
+    }
+  },
+
   validate: (frm, cdt, cdn) => {
     var tbl = frm.doc.project_shareholder || [];
     frm.events.remove_row(frm, tbl, "project_shareholder");
@@ -255,10 +241,10 @@ frappe.ui.form.on('Project', {
           }
         }
         if (!found) {
-          frappe.throw(__("There is no stock value in this currency, to set it go to 'Project Settings' !!"));
+          frappe.throw(__("There is no stock value in this currency, to set it go to 'Project Settings'!!"));
         }
       } else {
-        frappe.throw(__("Please set a stock values first in 'Project Settings' !!"));
+        frappe.throw(__("Please set a stock values first in 'Project Settings'!!"));
       }
     });
   },
@@ -287,7 +273,7 @@ frappe.ui.form.on('Project', {
           }
         }
       } else {
-        frappe.throw(__("Please set a company name in 'Project Settings' first !!"));
+        frappe.throw(__("Please set a company name in 'Project Settings' first!!"));
       }
     });
   },
@@ -304,13 +290,22 @@ frappe.ui.form.on('Project', {
   change_ratio_label: (frm, cdt, cdn, labelValue) => {
     var label = labelValue.bold();
     frm.events.change_field_label("ratio", label)
-    console.log(label);
+    // console.log(label);
   },
 
   change_field_label: function(fieldName, newValue) {
     var mylabel = $("div[data-fieldname=" + fieldName + "]").closest('div').find('label');
     mylabel.html(__(newValue));
+  },
+
+  fmt_money: (frm, amount) => {
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: frm.doc.currency
+    });
+    return formatter.format(amount).bold();
   }
+
 });
 
 frappe.ui.form.on("Project Shareholder", {
@@ -323,18 +318,22 @@ frappe.ui.form.on("Project Shareholder", {
             "account": row.account
           }).then(r => {
             var available_balance = r;
-            frappe.msgprint(__("{0}'s available balance = {1} {2}.",
-              [row.shareholder_name, available_balance, frm.doc.currency]));
+            frappe.msgprint(__("{0}'s available balance = {1}.",
+              [row.shareholder_name.bold(), frm.events.fmt_money(frm, available_balance)]));
           });
         } else {
           frappe.model.set_value(cdt, cdn, "amount", 0);
-          frappe.throw(__("Please select an account first !!"))
+          frappe.throw(__("Please select an account first!!"))
         }
       } else {
         frappe.model.set_value(cdt, cdn, "amount", 0);
-        frappe.throw(__("Please select a shareholder first !!"))
+        frappe.throw(__("Please select a shareholder first!!"))
       }
     };
+  },
+
+  project_shareholder_remove: function(frm, cdt, cdn) {
+    frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
   },
 
   amount: (frm, cdt, cdn) => {
@@ -344,7 +343,7 @@ frappe.ui.form.on("Project Shareholder", {
         if (row.amount != undefined) {
           if (frm.doc.total_cost == 0 || frm.doc.total_cost == undefined) {
             frappe.model.set_value(cdt, cdn, "amount", 0);
-            frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First !!"))
+            frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First!!"))
           } else {
             frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
               "account": row.account
@@ -353,8 +352,8 @@ frappe.ui.form.on("Project Shareholder", {
               if (available_balance < row.amount) {
                 var amount = row.amount;
                 frappe.model.set_value(cdt, cdn, "amount", 0);
-                frappe.throw(__("{0} does not have {1} {2} in his account !! his available balance = {3} {4}.",
-                  [row.shareholder_name, amount, frm.doc.currency, available_balance, frm.doc.currency]));
+                frappe.throw(__("{0} does not have {1} in his account!! his available balance = {2}.",
+                  [row.shareholder_name.bold(), frm.events.fmt_money(frm, amount), frm.events.fmt_money(frm, available_balance)]));
               } else {
                 var ratio = 0
                 if (frm.doc.ratio_type == "Stock") {
@@ -370,11 +369,11 @@ frappe.ui.form.on("Project Shareholder", {
         }
       } else if (row.amount != 0) {
         frappe.model.set_value(cdt, cdn, "amount", 0);
-        frappe.throw(__("Please select an account first !!"))
+        frappe.throw(__("Please select an account first!!"))
       }
     } else if (row.amount != 0) {
       frappe.model.set_value(cdt, cdn, "amount", 0);
-      frappe.throw(__("Please select a shareholder first !!"))
+      frappe.throw(__("Please select a shareholder first!!"))
     }
   },
 });
