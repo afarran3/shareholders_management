@@ -51,11 +51,11 @@ Doctype: Project,Project,مشروع
 ,"Please select a shareholder first!!","قم بإختيار مساهم أولاً!!"
 ,"Please insert Unit Type, Unit Cost and Number of Units First!!","قم بإدخال نوع الوحدة وتكلفة الوحدة وعدد الوحدات أولاً!!"
 ,"{0} does not have {1} in his account!! his available balance = {2}.","{0} لا يملك {1} في حسابه!! رصيدة المتاح = {2}."
-,"In exchange for contributing in {0}.","مقابل المساهمة في {0}."
+,"In exchange for contributing in {0}.","مقابل المساهمة في مشروع: {0}."
 ,"In exchange for the company's share of the profits of the project {0}.","مقابل نصيب الشركة من أرباح المشروع: {0}."
 ,"In exchange for the shareholder's share of the profits of the project {0}.","مقابل نصيب المساهم من أرباح المشروع: {0}. "
 ,"In exchange for the shareholder's share of the loss of the project {0}.","مقابل نصيب المساهم من خسائر المشروع: {0}."
-,"In exchange for shareholding in the project {0}.","مقابل المساهمة في المشروع: {0}."
+,"In exchange for shareholding in the project {0}.","مقابل رأس المال المساهم به في المشروع: {0}."
 ,"Submit","تأكيد"
 ,Duplicate,تكرار
 ,"Refreshing...","تحديث..."
