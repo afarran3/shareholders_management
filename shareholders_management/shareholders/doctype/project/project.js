@@ -4,6 +4,7 @@ var label_value = __("Ratio");
 frappe.ui.form.on('Project', {
   refresh: function(frm, doc, cdt, cdn) {
     if (frm.is_new() != 1) {
+      frm.page.btn_secondary.hide()
       if (frm.doc.is_amounts_deducted) {
         let meta = frappe.meta.docfield_list["Project Shareholder"];
         for (var i = 0; i < meta.length; i++) {
