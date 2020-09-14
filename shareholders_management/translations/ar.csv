@@ -42,10 +42,10 @@ Doctype: Project,Project,مشروع
 ,Number of stocks,عدد الأسهم
 ,"Percentage ratio (%)","النسبة المئوية (%)"
 ,"There is no stock value in this currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
-,"Please set a stock values first in 'Project Settings'!!","يرجى إعداد قيمة السهم في صفحة 'إعدادات المشاريع'."
+,"Please set a 'stock values' first in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً."
 ,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
 ,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
-,"Please set a company name in 'Project Settings' first!!","يرجى إعداد إسم الشركة في صفحة 'إعدادات المشاريع' أولاً!!"
+,"Please set a 'company name' in 'Project Settings' first!!","يرجى إعداد 'إسم الشركة' في صفحة 'إعدادات المشاريع' أولاً!!"
 ,"{0}'s available balance = {1}.","الرصيد المتاح لـ {0} = {1}."
 ,"Please select an account first!!","قم بإختيار حساب أولاً!!"
 ,"Please select a shareholder first!!","قم بإختيار مساهم أولاً!!"

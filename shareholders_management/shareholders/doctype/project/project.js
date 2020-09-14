@@ -245,7 +245,7 @@ frappe.ui.form.on('Project', {
           frappe.throw(__("There is no stock value in this currency, to set it go to 'Project Settings'!!"));
         }
       } else {
-        frappe.throw(__("Please set a stock values first in 'Project Settings'!!"));
+        frappe.throw(__("Please set a 'stock values' first in 'Project Settings' first!!"));
       }
     });
   },
@@ -274,7 +274,7 @@ frappe.ui.form.on('Project', {
           }
         }
       } else {
-        frappe.throw(__("Please set a company name in 'Project Settings' first!!"));
+        frappe.throw(__("Please set a 'company name' in 'Project Settings' first!!"));
       }
     });
   },
