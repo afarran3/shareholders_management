@@ -92,10 +92,12 @@
    "label": "Start Date"
   },
   {
+   "default": "YER",
    "fieldname": "currency",
    "fieldtype": "Link",
    "label": "Currency",
    "options": "Currency",
+   "reqd": 1,
    "set_only_once": 1
   },
   {
@@ -181,7 +183,7 @@
    "read_only": 1
   }
  ],
- "modified": "2020-09-11 19:52:24.557309",
+ "modified": "2020-09-14 11:09:22.356811",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",

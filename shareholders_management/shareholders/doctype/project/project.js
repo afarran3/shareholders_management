@@ -59,8 +59,9 @@ frappe.ui.form.on('Project', {
         frm.add_custom_button(__("Sale"), () => {
           frappe.prompt([{
               fieldname: "company_ratio",
-              fieldtype: "Float",
+              fieldtype: "Percent",
               label: __("Company Ratio (Percentage ratio (%))"),
+              default: "0",
               reqd: 1
             },
             {
