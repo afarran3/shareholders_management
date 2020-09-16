@@ -1,8 +1,15 @@
 // Copyright (c) 2020, Ahmad Al-Farran and contributors
 // For license information, please see license.txt
 var label_value = __("Ratio");
+var valedate_sale_date = 0;
 frappe.ui.form.on('Project', {
   refresh: function(frm, doc, cdt, cdn) {
+    if(frm.doc.docstatus){
+      frm.set_intro(__("This Project has been sold."));
+    }
+    else{
+      frm.set_intro(__("Project information, Insert all project's informations."));
+    }
     if (frm.is_new() != 1) {
       frm.page.btn_secondary.hide()
       if (frm.doc.is_amounts_deducted) {
@@ -24,7 +31,6 @@ frappe.ui.form.on('Project', {
             frappe.confirm(
               __("This will deduct shareholders' amounts from thire accounts, Are you sure!!"),
               function() {
-                // console.log(frm.doc.project_shareholder);
                 if (frm.doc.project_shareholder) {
                   frappe.xcall('shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_withdrawal', {
                     "project_name": frm.doc.project_name,
@@ -32,10 +38,7 @@ frappe.ui.form.on('Project', {
                   }).then(r => {
                     if (r == 1) {
                       frm.doc.is_amounts_deducted = 1;
-                      frappe.show_alert({
-                        message: __("Shareholders' accounts have been deducted successfully."),
-                        indicator: 'green'
-                      });
+                      frappe.msgprint(__("Shareholders' accounts have been deducted successfully.").bold());
                       frm.save();
                     } else {
                       frappe.show_alert({
@@ -66,6 +69,12 @@ frappe.ui.form.on('Project', {
               reqd: 1
             },
             {
+              fieldname: "buyer_name",
+              fieldtype: "Data",
+              label: __("Buyer Name"),
+              reqd: 1
+            },
+            {
               fieldname: "sale_amount",
               fieldtype: "Float",
               label: __("Sale Amount"),
@@ -75,28 +84,49 @@ frappe.ui.form.on('Project', {
               fieldname: "sale_date",
               fieldtype: "Date",
               label: __("Sale Date"),
-              reqd: 1
+              reqd: 1,
+              onchange: function(e) {
+                if(this.value != undefined){
+                  if (this.value <= frappe.datetime.nowdate()) {
+                    valedate_sale_date = 1;
+                  } else {
+                    valedate_sale_date = 0;
+                    var selected_sale_date = this.value;
+                    this.value = undefined;
+                    this.refresh();
+                    frappe.throw(__("This date {0} has not come yet!!", [selected_sale_date.bold()]));
+                  }
+                }
+              }
             }
           ], (data) => {
-            frm.doc.sold = 1;
-            frm.doc.company_ratio = data.company_ratio;
-            frm.refresh_fields("company_ratio");
-            frm.events.calc_ratio(frm, data.sale_amount, data.company_ratio);
-            // console.log("frm.doc.sold = " + frm.doc.sold);
-            frm.save('Submit');
-            setTimeout(function(){
-              frappe.call({
-                method: "shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_deposit",
-                args: {
-                  project_name: frm.doc.project_name,
-                  company_name: frm.doc.company_name,
-                  company_profit: frm.doc.company_profit,
-                  currency: frm.doc.currency,
-                  end_date: data.sale_date
-                },
-                callback: function(r) {}
-              });
-            }, 600);
+            if(valedate_sale_date){
+              frm.doc.sold = 1;
+              frm.doc.end_date = data.sale_date;
+              frm.doc.buyer_name = data.buyer_name;
+              frm.doc.sale_amount = data.sale_amount;
+              frm.doc.company_ratio = data.company_ratio;
+              frm.refresh_fields("company_ratio");
+              frm.events.calc_ratio(frm, data.sale_amount, data.company_ratio);
+              // console.log("frm.doc.sold = " + frm.doc.sold);
+              frm.save('Submit');
+              setTimeout(function(){
+                frappe.call({
+                  method: "shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_deposit",
+                  args: {
+                    project_name: frm.doc.project_name,
+                    company_name: frm.doc.company_name,
+                    company_profit: frm.doc.company_profit,
+                    currency: frm.doc.currency,
+                    end_date: data.sale_date
+                  },
+                  callback: function(r) {
+                    frappe.msgprint(__("{0} was sold to {1} for a {1}.",
+                      [row.shareholder_name.bold(), data.buyer_name, frm.events.fmt_money(frm, data.sale_amount)]));
+                  }
+                });
+              }, 600);
+            }
           }, __("Sale Informations"));
         }).toggleClass('btn-primary');
 

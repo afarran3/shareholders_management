@@ -14,7 +14,8 @@ Doctype: Project,Project,مشروع
 ,Select how to calculate shareholders ratio,إختر طريقة إحتساب نِسَب المساهمين
 ,Stock Value,قيمة السهم
 ,To change stock value go to settings.,لتغيير قيمة السهم إذهب إلى إعدادات المشروع
-,Company Ratio,نسبة الشركة
+,"Company Ratio (%)","نسبة الشركة (%)"
+,End Date,تاريخ البيع
 ,Company Profit,أرباح الشركة
 ,Sold,تم البيع
 ,Unit Cost,تكلفة الوحدة
@@ -42,7 +43,7 @@ Doctype: Project,Project,مشروع
 ,Number of stocks,عدد الأسهم
 ,"Percentage ratio (%)","النسبة المئوية (%)"
 ,"There is no stock value in this currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
-,"Please set a 'stock values' first in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً."
+,"Please set a 'stock values' first in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً!!"
 ,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
 ,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
 ,"Please set a 'company name' in 'Project Settings' first!!","يرجى إعداد 'إسم الشركة' في صفحة 'إعدادات المشاريع' أولاً!!"
@@ -65,7 +66,10 @@ Doctype: Project,Project,مشروع
 ,Toggle Sidebar,عرض/إخفاء القائمة الجانبية
 ,Report Builder,صانع التقارير
 ,Remove,إزالة
-
+,"Project information, Insert all project's informations.","'بيانات المشروع', قُم بإدخال جميع بيانات المشروع."
+,"This Project has been sold.","هذا المشروع قد تم بيعة."
+,Sale Informatoins,معلومات البيع
+,Buyer Name,إسم المشتري
 
 
 

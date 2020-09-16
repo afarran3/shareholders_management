@@ -10,24 +10,26 @@
   "number_of_units",
   "ratio_type",
   "stock_value",
-  "company_ratio",
-  "company_profit",
   "is_amounts_deducted",
   "sold",
   "column_break_4",
   "start_date",
-  "end_date",
   "unit_cost",
   "currency",
   "total_cost",
   "total_shareholding_amount",
-  "sale_amount",
+  "sale_section",
   "company_name",
+  "company_profit",
+  "company_ratio",
+  "column_break_20",
+  "end_date",
+  "buyer_name",
+  "sale_amount",
   "project_shareholders_section",
   "project_shareholder",
   "description_section",
-  "description",
-  "amended_from"
+  "description"
  ],
  "fields": [
   {
@@ -128,22 +130,14 @@
    "fieldname": "is_amounts_deducted",
    "fieldtype": "Check",
    "hidden": 1,
-   "label": "Is Amounts Deducted"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Project",
-   "print_hide": 1,
-   "read_only": 1
+   "label": "Is Amounts Deducted",
+   "print_hide": 1
   },
   {
    "depends_on": "eval:doc.sold == 1",
    "fieldname": "company_ratio",
-   "fieldtype": "Float",
-   "label": "Company Ratio",
+   "fieldtype": "Percent",
+   "label": "Company Ratio (%)",
    "read_only": 1
   },
   {
@@ -181,9 +175,27 @@
    "fieldtype": "Currency",
    "label": "Sale Amount",
    "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.sold == 1",
+   "fieldname": "buyer_name",
+   "fieldtype": "Data",
+   "label": "Buyer Name",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.sold == 1",
+   "fieldname": "sale_section",
+   "fieldtype": "Section Break",
+   "in_preview": 1,
+   "label": "Sale Informatoins"
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break"
   }
  ],
- "modified": "2020-09-14 11:09:22.356811",
+ "modified": "2020-09-17 00:31:31.137028",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",
