@@ -4,6 +4,7 @@ var label_value = __("Ratio");
 var valedate_sale_date = 0;
 frappe.ui.form.on('Project', {
   refresh: function(frm, doc, cdt, cdn) {
+    frm.events.get_project_settings(frm, "all");
     if(frm.doc.docstatus){
       frm.set_intro(__("This Project has been sold."));
     }
@@ -146,7 +147,6 @@ frappe.ui.form.on('Project', {
     });
     frm.set_query('shareholder_name', 'project_shareholder', function(doc, cdt, cdn) {
       var shareholders = [];
-      // var child = locals[cdt][cdn];
       for (var i = 0; i < frm.doc.project_shareholder.length; i++) {
         shareholders.push(frm.doc.project_shareholder[i].shareholder_name);
       }
@@ -160,15 +160,12 @@ frappe.ui.form.on('Project', {
   onload: (frm) => {
     frm.ignore_doctypes_on_cancel_all = ["Project Shareholder"];
     frm.events.ratio_label(frm);
-    if(!frm.doc.sold && !frm.is_new()){
-      frm.events.get_stock_value(frm);
-    }
-    frm.events.get_company_name(frm);
   },
 
   currency: (frm) => {
-    if (frm.doc.currency != undefined) {
-      frm.events.get_stock_value(frm);
+    if (frm.doc.currency != undefined && frm.doc.company_name) {
+      console.log("frm.doc.company_name = " + frm.doc.company_name);
+      frm.events.get_project_settings(frm, "stock");
     }
   },
 
@@ -258,56 +255,87 @@ frappe.ui.form.on('Project', {
     }
   },
 
-  get_stock_value: (frm) => {
+  get_project_settings: (frm, chk_for) => {
     frappe.xcall('shareholders_management.shareholders.doctype.project_settings.project_settings.get_project_settings', {}).then(r => {
       var stock_values = r["stock_values"];
-      var found = 0;
-      if (stock_values != '') {
-        for (var i = 0; i < stock_values.length; i++) {
-          if (stock_values[i].currency == frm.doc.currency) {
-            found = 1;
-            if (frm.doc.stock_value != stock_values[i].value) {
-              frm.doc.stock_value = stock_values[i].value;
-              frm.refresh_fields("stock_value");
-            }
+      var company_name = r["company_name"];
+      if (chk_for == "all") {
+        console.log("all");
+        if (stock_values == '' && !company_name) {
+          frappe.set_route("Form", "Project Settings");
+          frappe.throw(__("Please set a 'stock values' and 'company name' in 'Project Settings' first!!"));
+        }
+        if (stock_values != '') {
+          frm.events.set_stock_value(frm, stock_values);
+          if(!company_name){
+            frappe.set_route("Form", "Project Settings");
+            frappe.throw(__("Please set a 'company name' in 'Project Settings' first!!"));
           }
         }
-        if (!found) {
-          frappe.throw(__("There is no stock value in this currency, to set it go to 'Project Settings'!!"));
+        if (company_name) {
+          frm.events.set_company_name(frm, company_name);
+          if(stock_values == ''){
+            frappe.set_route("Form", "Project Settings");
+            frappe.throw(__("Please set a 'stock values' in 'Project Settings' first!!"));
+          }
         }
-      } else {
-        frappe.throw(__("Please set a 'stock values' first in 'Project Settings' first!!"));
+      }
+      else if (chk_for == "stock") {
+        if (stock_values != '') {
+          frm.events.set_stock_value(frm, stock_values);
+        }
       }
     });
   },
 
-  get_company_name: (frm) => {
-    frappe.xcall('shareholders_management.shareholders.doctype.project_settings.project_settings.get_project_settings', {}).then(r => {
-      var company_name = r["company_name"];
-      if (company_name) {
-        if(!frm.doc.sold){
-          if (frm.doc.company_name && frm.doc.company_name != company_name) {
-            frappe.confirm(
-              __("This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}",[frm.doc.company_name.bold(), company_name.bold()]),
-              function() {
-                frm.doc.company_name = company_name;
-                frm.refresh_fields("company_name");
-                show_alert(__("Project Company changed successfully."))
-              },
-              function() {
-                window.close();
-              }
-            )
-          }
-          else if (!frm.doc.company_name) {
+  set_stock_value: (frm, stock_values) => {
+    var found = 0;
+    for (var i = 0; i < stock_values.length; i++) {
+      if (stock_values[i].currency == frm.doc.currency) {
+        found = 1;
+        if (frm.doc.stock_value != stock_values[i].value) {
+          frm.doc.stock_value = stock_values[i].value;
+          frm.refresh_fields("stock_value");
+        }
+      }
+    }
+    if (!found) {
+      let d = frappe.msgprint({
+        title: __('Go to Project Settings?'),
+        message: __("There is no stock value for {0} currency, to set it go to 'Project Settings'!!",[frm.doc.currency.bold()]),
+        indicator: 'red',
+        primary_action: {
+          'label': 'Yes',
+          'client_action': 'frappe.set_route',
+          'args': ["Form", "Project Settings"]
+        }
+      });
+    }
+  },
+
+  set_company_name: (frm, company_name) => {
+    if(!frm.doc.sold){
+      if (frm.doc.company_name && frm.doc.company_name != company_name) {
+        frappe.confirm(
+          __("This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}",[frm.doc.company_name.bold(), company_name.bold()]),
+          function() {
             frm.doc.company_name = company_name;
             frm.refresh_fields("company_name");
+            frappe.show_alert({
+              message: __("Project Company changed successfully."),
+              indicator: 'green'
+            });
+          },
+          function() {
+            window.close();
           }
-        }
-      } else {
-        frappe.throw(__("Please set a 'company name' in 'Project Settings' first!!"));
+        )
       }
-    });
+      else if (!frm.doc.company_name) {
+        frm.doc.company_name = company_name;
+        frm.refresh_fields("company_name");
+      }
+    }
   },
 
   get_total_shareholdering_amount: (frm, cdt, cdn) => {
@@ -322,7 +350,6 @@ frappe.ui.form.on('Project', {
   change_ratio_label: (frm, cdt, cdn, labelValue) => {
     var label = labelValue.bold();
     frm.events.change_field_label("ratio", label)
-    // console.log(label);
   },
 
   change_field_label: function(fieldName, newValue) {

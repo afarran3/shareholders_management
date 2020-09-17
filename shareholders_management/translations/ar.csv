@@ -42,8 +42,8 @@ Doctype: Project,Project,مشروع
 ,Percentage,مئوية
 ,Number of stocks,عدد الأسهم
 ,"Percentage ratio (%)","النسبة المئوية (%)"
-,"There is no stock value in this currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم لهذه العملة بعد, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
-,"Please set a 'stock values' first in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً!!"
+,"There is no stock value for {0} currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم للعملة {0}, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
+,"Please set a 'stock values' in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً!!"
 ,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
 ,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
 ,"Please set a 'company name' in 'Project Settings' first!!","يرجى إعداد 'إسم الشركة' في صفحة 'إعدادات المشاريع' أولاً!!"
@@ -70,7 +70,8 @@ Doctype: Project,Project,مشروع
 ,"This Project has been sold.","هذا المشروع قد تم بيعة."
 ,Sale Informatoins,معلومات البيع
 ,Buyer Name,إسم المشتري
-
+,"Go to Project Settings?","إذهب إلى إعدادات المشروع؟"
+,"Please set a 'stock values' and 'company name' in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' و 'إسم الشركة' في صفحة 'إعدادات المشروع' أولاً!!"
 
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع
