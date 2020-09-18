@@ -163,7 +163,9 @@ frappe.ui.form.on('Project', {
   },
 
   after_save: (frm) => {
-    frm.reload_doc();
+    if(!frm.doc.sold){
+      frm.reload_doc();
+    }
   },
 
   currency: (frm) => {
