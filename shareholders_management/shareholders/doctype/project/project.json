@@ -18,6 +18,7 @@
   "currency",
   "total_cost",
   "total_shareholding_amount",
+  "remaining_amount",
   "sale_section",
   "company_name",
   "company_profit",
@@ -193,9 +194,15 @@
   {
    "fieldname": "column_break_20",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remaining_amount",
+   "fieldtype": "Currency",
+   "label": "Remaining Amount",
+   "read_only": 1
   }
  ],
- "modified": "2020-09-17 00:31:31.137028",
+ "modified": "2020-09-18 22:39:38.480824",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",

@@ -162,9 +162,12 @@ frappe.ui.form.on('Project', {
     frm.events.ratio_label(frm);
   },
 
+  after_save: (frm) => {
+    frm.reload_doc();
+  },
+
   currency: (frm) => {
     if (frm.doc.currency != undefined && frm.doc.company_name) {
-      console.log("frm.doc.company_name = " + frm.doc.company_name);
       frm.events.get_project_settings(frm, "stock");
     }
   },
@@ -252,6 +255,7 @@ frappe.ui.form.on('Project', {
     if (frm.doc.unit_cost && frm.doc.number_of_units) {
       frm.doc.total_cost = frm.doc.unit_cost * frm.doc.number_of_units;
       frm.refresh_fields("total_cost");
+      frm.events.set_remaining_amount(frm);
     }
   },
 
@@ -260,7 +264,6 @@ frappe.ui.form.on('Project', {
       var stock_values = r["stock_values"];
       var company_name = r["company_name"];
       if (chk_for == "all") {
-        console.log("all");
         if (stock_values == '' && !company_name) {
           frappe.set_route("Form", "Project Settings");
           frappe.throw(__("Please set a 'stock values' and 'company name' in 'Project Settings' first!!"));
@@ -345,6 +348,12 @@ frappe.ui.form.on('Project', {
     }
     frm.doc.total_shareholding_amount = total_amount;
     frm.refresh_fields("total_shareholdering_amount");
+    frm.events.set_remaining_amount(frm);
+  },
+
+  set_remaining_amount: (frm) => {
+    frm.doc.remaining_amount = frm.doc.total_cost - frm.doc.total_shareholding_amount;
+    frm.refresh_fields("remaining_amount");
   },
 
   change_ratio_label: (frm, cdt, cdn, labelValue) => {

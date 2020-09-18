@@ -72,6 +72,7 @@ Doctype: Project,Project,مشروع
 ,Buyer Name,إسم المشتري
 ,"Go to Project Settings?","إذهب إلى إعدادات المشروع؟"
 ,"Please set a 'stock values' and 'company name' in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' و 'إسم الشركة' في صفحة 'إعدادات المشروع' أولاً!!"
+,Remaining Amount,المبلغ المتبقي للمساهمة به
 
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع
