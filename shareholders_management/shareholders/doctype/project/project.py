@@ -46,7 +46,8 @@ def submit_shareholdedrs_withdrawal(project_name, start_date):
 
 @frappe.whitelist()
 def submit_shareholdedrs_deposit(project_name, company_name, company_profit, currency, end_date):
-	if company_profit != 0:
+	if flt(company_profit) != 0:
+		print("company_profit != 0")
 		if flt(company_profit) > 0:
 			description = _("In exchange for the company's share of the profits of the project {0}.").format(project_name)
 		else:
@@ -89,6 +90,8 @@ def submit_shareholdedrs_deposit(project_name, company_name, company_profit, cur
 				description = _("In exchange for the shareholder's share of the loss of the project {0}.").format(project_name)
 				insert_into_withdrawal_table(doc, loss, end_date, "Projects losses", project_name, description)
 				available_balance = doc.available_balance - loss
+			else:
+				available_balance = doc.available_balance
 			description = _("In exchange for shareholding in the project {0}.").format(project_name)
 			insert_into_deposit_table(doc, i.amount, end_date, "Projects profits", project_name, description)
 			doc.available_balance = available_balance + i.amount

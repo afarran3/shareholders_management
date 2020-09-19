@@ -15,6 +15,7 @@ frappe.ui.form.on('Project', {
       frm.page.btn_secondary.hide()
       if (frm.doc.is_amounts_deducted) {
         $('*[data-fieldname="project_shareholder"]').find('.grid-remove-rows').hide();
+        $('*[data-fieldname="project_shareholder"]').find('.grid-add-row').hide();
         let meta = frappe.meta.docfield_list["Project Shareholder"];
         for (var i = 0; i < meta.length; i++) {
           if (meta[i].fieldname != "description") {
