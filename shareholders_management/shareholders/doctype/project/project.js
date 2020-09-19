@@ -14,6 +14,7 @@ frappe.ui.form.on('Project', {
     if (frm.is_new() != 1) {
       frm.page.btn_secondary.hide()
       if (frm.doc.is_amounts_deducted) {
+        $('*[data-fieldname="project_shareholder"]').find('.grid-remove-rows').hide();
         let meta = frappe.meta.docfield_list["Project Shareholder"];
         for (var i = 0; i < meta.length; i++) {
           if (meta[i].fieldname != "description") {
@@ -62,13 +63,14 @@ frappe.ui.form.on('Project', {
 
       if (frm.doc.is_amounts_deducted && !frm.doc.sold) {
         frm.add_custom_button(__("Sale"), () => {
-          frappe.prompt([{
-              fieldname: "company_ratio",
-              fieldtype: "Percent",
-              label: __("Company Ratio (Percentage ratio (%))"),
-              default: "0",
-              reqd: 1
-            },
+          frappe.prompt([
+            // {
+            //   fieldname: "company_ratio",
+            //   fieldtype: "Percent",
+            //   label: __("Company Ratio (Percentage ratio (%))"),
+            //   default: "0",
+            //   reqd: 1
+            // },
             {
               fieldname: "buyer_name",
               fieldtype: "Data",
@@ -106,9 +108,9 @@ frappe.ui.form.on('Project', {
               frm.doc.end_date = data.sale_date;
               frm.doc.buyer_name = data.buyer_name;
               frm.doc.sale_amount = data.sale_amount;
-              frm.doc.company_ratio = data.company_ratio;
-              frm.refresh_fields("company_ratio");
-              frm.events.calc_ratio(frm, data.sale_amount, data.company_ratio);
+              // frm.doc.company_ratio = data.company_ratio;
+              // frm.refresh_fields("company_ratio");
+              frm.events.calc_ratio(frm, data.sale_amount);
               // console.log("frm.doc.sold = " + frm.doc.sold);
               frm.save('Submit');
               setTimeout(function(){
@@ -196,30 +198,28 @@ frappe.ui.form.on('Project', {
     }
   },
 
-  calc_ratio: (frm, sale_amount, company_ratio) => {
+  calc_ratio: (frm, sale_amount) => {
     var profit = sale_amount - frm.doc.total_cost;
     var stock_number = frm.doc.total_cost / frm.doc.stock_value;
     var ps = frm.doc.project_shareholder;
-    if (company_ratio > 0){
-      frm.doc.company_profit = ((company_ratio / 100) * profit);
-      frm.refresh_fields("company_profit");
-    }
-    else {
-      frm.doc.company_profit = 0;
-      frm.refresh_fields("company_profit");
-    }
-    profit = profit - frm.doc.company_profit;
+    var company_profit = 0;
     if (frm.doc.ratio_type == "Stock") {
       for (var i = 0; i < ps.length; i++) {
-        ps[i].amount_after_sale = ((profit / stock_number) * ps[i].ratio) + ps[i].amount
+        company_profit = ((ps[i].company_ratio / 100) * ((profit / stock_number) * ps[i].ratio));
+        frm.doc.company_profit = frm.doc.company_profit + company_profit;
+        ps[i].amount_after_sale = (((profit / stock_number) * ps[i].ratio) + ps[i].amount) - company_profit;
       }
       frm.refresh_fields("project_shareholder");
+      frm.refresh_fields("company_profit");
     }
     else {
       for (var i = 0; i < ps.length; i++) {
-        ps[i].amount_after_sale = ((ps[i].ratio / 100) * profit) + ps[i].amount
+        company_profit = ((ps[i].company_ratio / 100) * ((ps[i].ratio / 100) * profit));
+        frm.doc.company_profit = frm.doc.company_profit + company_profit;
+        ps[i].amount_after_sale = (((ps[i].ratio / 100) * profit) + ps[i].amount) - company_profit;
       }
       frm.refresh_fields("project_shareholder");
+      frm.refresh_fields("company_profit");
     }
   },
 
@@ -249,8 +249,11 @@ frappe.ui.form.on('Project', {
     }
   },
 
-  project_shareholder_on_form_rendered: (frm, cdt, cdn) => {
+  project_shareholder_on_form_rendered: (frm, grid_row, cdt, cdn) => {
     frm.events.change_ratio_label(frm, cdt, cdn, label_value);
+    if(frm.doc.is_amounts_deducted){
+      $(".grid-delete-row").hide();
+    }
   },
 
   set_total_cost: (frm) => {

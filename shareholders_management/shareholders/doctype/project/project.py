@@ -46,39 +46,37 @@ def submit_shareholdedrs_withdrawal(project_name, start_date):
 
 @frappe.whitelist()
 def submit_shareholdedrs_deposit(project_name, company_name, company_profit, currency, end_date):
-	company_account = frappe.get_list("Shareholder Account", filters={"shareholder_name": company_name})
-	description = _("In exchange for the company's share of the profits of the project {0}.").format(project_name)
-	if not company_account:
-		company = frappe.db.exists({
-		    'doctype': 'Shareholder',
-		    'shareholder_name': company_name})
-		if not company:
-			new_doc = frappe.new_doc("Shareholder")
+	if company_profit != 0:
+		if flt(company_profit) > 0:
+			description = _("In exchange for the company's share of the profits of the project {0}.").format(project_name)
+		else:
+			description = _("In exchange for the company's share of the losses of the project {0}.").format(project_name)
+		company_account = frappe.get_list("Shareholder Account", filters={"shareholder_name": company_name})
+		if not company_account:
+			# company = frappe.db.exists({
+			#     'doctype': 'Shareholder',
+			#     'shareholder_name': company_name})
+			# if not company:
+			if not frappe.db.exists({'doctype': 'Shareholder', 'shareholder_name': company_name}):
+				new_doc = frappe.new_doc("Shareholder")
+				new_doc.shareholder_name = company_name
+				new_doc.insert()
+			new_doc = frappe.new_doc("Shareholder Account")
 			new_doc.shareholder_name = company_name
+			new_doc.available_balance = company_profit
+			new_doc.currency = currency
+			new_doc.is_company = 1
+			insert_into_deposit_table(new_doc, company_profit, end_date, "Projects profits", project_name, description)
 			new_doc.insert()
-		new_doc = frappe.new_doc("Shareholder Account")
-		new_doc.shareholder_name = company_name
-		new_doc.available_balance = company_profit
-		new_doc.currency = currency
-		new_doc.is_company = 1
-		# description = _("In exchange for the company's share of the profits of the project {0}.").format(project_name)
-		insert_into_deposit_table(new_doc, company_profit, end_date, "Projects profits", project_name, description)
-		new_doc.insert()
-	else:
-		for i in company_account:
-			doc = frappe.get_doc('Shareholder Account', i.name)
-			# print(doc.available_balance)
-			# print(company_profit)
-			doc.available_balance = doc.available_balance + flt(company_profit)
-			insert_into_deposit_table(doc, company_profit, end_date, "Projects profits", project_name, description)
-			doc.save()
+		else:
+			for i in company_account:
+				doc = frappe.get_doc('Shareholder Account', i.name)
+				doc.available_balance = doc.available_balance + flt(company_profit)
+				insert_into_deposit_table(doc, company_profit, end_date, "Projects profits", project_name, description)
+				doc.save()
 	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount", "amount_after_sale"])
-	# print("++++++++++++")
 	if shareholders_array:
-		# print("==============")
-		# print(shareholders_array)
 		for i in shareholders_array:
-			# print(i)
 			available_balance = 0
 			doc = frappe.get_doc("Shareholder Account", i.account)
 			if i.amount_after_sale > i.amount:

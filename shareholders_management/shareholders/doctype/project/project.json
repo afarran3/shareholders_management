@@ -23,7 +23,6 @@
   "sale_section",
   "company_name",
   "company_profit",
-  "company_ratio",
   "column_break_20",
   "end_date",
   "buyer_name",
@@ -136,13 +135,6 @@
    "print_hide": 1
   },
   {
-   "depends_on": "eval:doc.sold == 1",
-   "fieldname": "company_ratio",
-   "fieldtype": "Percent",
-   "label": "Company Ratio (%)",
-   "read_only": 1
-  },
-  {
    "default": "0",
    "fieldname": "sold",
    "fieldtype": "Check",
@@ -197,13 +189,14 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval: doc.total_shareholding_amount >= 0",
    "fieldname": "remaining_amount",
    "fieldtype": "Currency",
    "label": "Remaining Amount",
    "read_only": 1
   }
  ],
- "modified": "2020-09-18 23:32:02.674433",
+ "modified": "2020-09-19 20:38:17.960593",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",

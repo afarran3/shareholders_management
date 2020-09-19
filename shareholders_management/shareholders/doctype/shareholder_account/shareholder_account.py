@@ -29,10 +29,10 @@ class ShareholderAccount(Document):
 
 	def validate_available_amount(self):
 		if not self.is_new():
-			if self.available_balance < 0:
-				frappe.throw(_("Balance can not be less than ZERO!!"))
-			else:
-				frappe.msgprint(_("{0}'s available balance = {1} {2}.").format(frappe.bold(self.shareholder_name),
+			# if self.available_balance < 0:
+			# 	frappe.throw(_("Balance can not be less than ZERO!!"))
+			# else:
+			frappe.msgprint(_("{0}'s available balance = {1} {2}.").format(frappe.bold(self.shareholder_name),
 																	frappe.bold(frappe.utils.fmt_money(self.available_balance)),
 																	frappe.bold(self.currency)))
 

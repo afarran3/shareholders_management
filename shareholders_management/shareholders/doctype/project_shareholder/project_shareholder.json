@@ -11,6 +11,7 @@
   "column_break_4",
   "amount",
   "ratio",
+  "company_ratio",
   "check",
   "description_section",
   "description"
@@ -50,7 +51,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "Ratio",
+   "label": "Shareholder Ratio",
    "read_only": 1
   },
   {
@@ -74,15 +75,23 @@
    "label": "Check Amount"
   },
   {
+   "description": "The net of what the shareholder worths after the sale and after deducting the company ratio.",
    "fieldname": "amount_after_sale",
    "fieldtype": "Currency",
    "label": "Amount After Sale",
    "precision": "4",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "company_ratio",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Company Ratio"
   }
  ],
  "istable": 1,
- "modified": "2020-09-10 20:43:59.964458",
+ "modified": "2020-09-19 21:46:36.162469",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project Shareholder",

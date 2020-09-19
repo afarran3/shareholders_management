@@ -73,6 +73,10 @@ Doctype: Project,Project,مشروع
 ,"Go to Project Settings?","إذهب إلى إعدادات المشروع؟"
 ,"Please set a 'stock values' and 'company name' in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' و 'إسم الشركة' في صفحة 'إعدادات المشروع' أولاً!!"
 ,Remaining Amount,المبلغ المتبقي للمساهمة به
+,"In exchange for the company's share of the losses of the project {0}.","مقابل نصيب الشركة من خسائر المشروع: {0}."
+,Shareholder Ratio,نسبة المساهمة
+,Company Ratio,نسبة الشركة من ربح المساهم
+,"The net of what the shareholder worths after the sale and after deducting the company ratio.","صافي ما يستحقه المساهم بعد البيع وبعد خصم نسبة الشركة."
 
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع
