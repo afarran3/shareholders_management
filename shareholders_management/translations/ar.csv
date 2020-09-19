@@ -77,6 +77,7 @@ Doctype: Project,Project,مشروع
 ,Shareholder Ratio,نسبة المساهمة
 ,Company Ratio,نسبة الشركة من ربح المساهم
 ,"The net of what the shareholder worths after the sale and after deducting the company ratio.","صافي ما يستحقه المساهم بعد البيع وبعد خصم نسبة الشركة."
+,"Project has been sold to {0} successfully.","تم بيع المشروع لـ {0} بنجاح."
 
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع

@@ -4,6 +4,8 @@ var label_value = __("Ratio");
 var valedate_sale_date = 0;
 frappe.ui.form.on('Project', {
   refresh: function(frm, doc, cdt, cdn) {
+    $('*[data-fieldname="project_shareholder"]').find('.grid-remove-rows').show();
+    $('*[data-fieldname="project_shareholder"]').find('.grid-add-row').show();
     frm.events.get_project_settings(frm, "all");
     if(frm.doc.docstatus){
       frm.set_intro(__("This Project has been sold."));
@@ -65,13 +67,6 @@ frappe.ui.form.on('Project', {
       if (frm.doc.is_amounts_deducted && !frm.doc.sold) {
         frm.add_custom_button(__("Sale"), () => {
           frappe.prompt([
-            // {
-            //   fieldname: "company_ratio",
-            //   fieldtype: "Percent",
-            //   label: __("Company Ratio (Percentage ratio (%))"),
-            //   default: "0",
-            //   reqd: 1
-            // },
             {
               fieldname: "buyer_name",
               fieldtype: "Data",
@@ -109,10 +104,7 @@ frappe.ui.form.on('Project', {
               frm.doc.end_date = data.sale_date;
               frm.doc.buyer_name = data.buyer_name;
               frm.doc.sale_amount = data.sale_amount;
-              // frm.doc.company_ratio = data.company_ratio;
-              // frm.refresh_fields("company_ratio");
               frm.events.calc_ratio(frm, data.sale_amount);
-              // console.log("frm.doc.sold = " + frm.doc.sold);
               frm.save('Submit');
               setTimeout(function(){
                 frappe.call({
@@ -125,8 +117,11 @@ frappe.ui.form.on('Project', {
                     end_date: data.sale_date
                   },
                   callback: function(r) {
-                    frappe.msgprint(__("{0} was sold to {1} for a {1}.",
-                      [row.shareholder_name.bold(), data.buyer_name, frm.events.fmt_money(frm, data.sale_amount)]));
+                    frappe.show_alert({
+                      message: __("Project has been sold to {0} successfully.",[data.buyer_name.bold()]),
+                      indicator: 'blue'
+                    });
+                    console.log(frm.doc.project_name.bold() + data.buyer_name.bold() + frm.events.fmt_money(frm, data.sale_amount));
                   }
                 });
               }, 600);
