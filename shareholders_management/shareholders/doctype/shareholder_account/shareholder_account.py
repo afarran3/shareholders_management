@@ -11,7 +11,7 @@ class ShareholderAccount(Document):
 
 	def validate(self):
 		self.validate_account()
-		self.validate_available_amount()
+		# self.validate_available_amount()
 
 	def validate_account(self):
 		if self.is_new():
@@ -27,14 +27,14 @@ class ShareholderAccount(Document):
                                                                      frappe.bold(self.currency)))
 
 
-	def validate_available_amount(self):
-		if not self.is_new():
-			# if self.available_balance < 0:
-			# 	frappe.throw(_("Balance can not be less than ZERO!!"))
-			# else:
-			frappe.msgprint(_("{0}'s available balance = {1} {2}.").format(frappe.bold(self.shareholder_name),
-																	frappe.bold(frappe.utils.fmt_money(self.available_balance)),
-																	frappe.bold(self.currency)))
+	# def validate_available_amount(self):
+	# 	if not self.is_new():
+	# 		# if self.available_balance < 0:
+	# 		# 	frappe.throw(_("Balance can not be less than ZERO!!"))
+	# 		# else:
+	# 		frappe.msgprint(_("{0}'s available balance = {1} {2}.").format(frappe.bold(self.shareholder_name),
+	# 																frappe.bold(frappe.utils.fmt_money(self.available_balance)),
+	# 																frappe.bold(self.currency)))
 
 @frappe.whitelist()
 def get_shareholder_projects(doctype, txt, searchfield, start, page_len, filters):

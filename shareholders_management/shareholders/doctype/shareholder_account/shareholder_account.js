@@ -52,6 +52,15 @@ frappe.ui.form.on('Shareholder Account', {
 
   },
 
+  validate: (frm) => {
+    if (!frm.is_new()){
+      // console.log("JS validate");
+      frappe.msgprint(__("{0}'s available balance = {1}.",
+          [frm.doc.shareholder_name.bold(),
+          frm.events.fmt_money(frm, frm.doc.available_balance)]));
+    }
+  },
+
   fmt_money: (frm, amount) => {
     var formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',

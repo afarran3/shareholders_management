@@ -54,7 +54,7 @@ Doctype: Project,Project,مشروع
 ,"{0} does not have {1} in his account!! his available balance = {2}.","{0} لا يملك {1} في حسابه!! رصيدة المتاح = {2}."
 ,"In exchange for contributing in {0}.","مقابل المساهمة في مشروع: {0}."
 ,"In exchange for the company's share of the profits of the project {0}.","مقابل نصيب الشركة من أرباح المشروع: {0}."
-,"In exchange for the shareholder's share of the profits of the project {0}.","مقابل نصيب المساهم من أرباح المشروع: {0}. "
+,"In exchange for the shareholder's share of the profits of the project {0}.","مقابل نصيب المساهم من أرباح المشروع: {0}."
 ,"In exchange for the shareholder's share of the loss of the project {0}.","مقابل نصيب المساهم من خسائر المشروع: {0}."
 ,"In exchange for shareholding in the project {0}.","مقابل رأس المال المساهم به في المشروع: {0}."
 ,"Submit","تأكيد"
@@ -78,6 +78,10 @@ Doctype: Project,Project,مشروع
 ,Company Ratio,نسبة الشركة من ربح المساهم
 ,"The net of what the shareholder worths after the sale and after deducting the company ratio.","صافي ما يستحقه المساهم بعد البيع وبعد خصم نسبة الشركة."
 ,"Project has been sold to {0} successfully.","تم بيع المشروع لـ {0} بنجاح."
+,"Project {0} has been sold to {1} FOR {2}.","تم بيع المشروع {0} للمشتري {1} وذلك مقابل: {2}."
+,"In exchange for the shareholder's share of the loss of the project {0}, after deducting {1} as company ratio.","مقابل نصيب المساهم من خسائر المشروع: {0}، بعد خصم {1} نصيب الشركة من الخسارة."
+,"In exchange for the shareholder's share of the profits of the project {0}, after deducting {1} as company ratio.","مقابل نصيب المساهم من أرباح المشروع: {0}، بعد خصم {1} نصيب الشركة من الربح."
+
 
 
 Doctype: Project Shareholder,Project Shareholder,مساهم في المشروع

@@ -21,47 +21,15 @@ frappe.ui.form.on('Project', {
         let meta = frappe.meta.docfield_list["Project Shareholder"];
         for (var i = 0; i < meta.length; i++) {
           if (meta[i].fieldname != "description") {
-            var df = frappe.meta.get_docfield("Project Shareholder", meta[i].fieldname, frm.doc.name);
-            df.read_only = 1;
+            if (meta[i].fieldname != "company_ratio") {
+              var df = frappe.meta.get_docfield("Project Shareholder", meta[i].fieldname, frm.doc.name);
+              df.read_only = 1;
+            }
           }
         }
       }
-      if (!frm.doc.is_amounts_deducted) {
-        frm.add_custom_button(__("Sync accounts"), () => {
-          if (frm.doc.total_cost > frm.doc.total_shareholding_amount) {
-            frappe.throw(__("Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
-          } else if (frm.doc.total_cost < frm.doc.total_shareholding_amount) {
-            frappe.throw(__("Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
-          } else {
-            frappe.confirm(
-              __("This will deduct shareholders' amounts from thire accounts, Are you sure!!"),
-              function() {
-                if (frm.doc.project_shareholder) {
-                  frappe.xcall('shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_withdrawal', {
-                    "project_name": frm.doc.project_name,
-                    "start_date": frm.doc.start_date
-                  }).then(r => {
-                    if (r == 1) {
-                      frm.doc.is_amounts_deducted = 1;
-                      frappe.msgprint(__("Shareholders' accounts have been deducted successfully.").bold());
-                      frm.save();
-                    } else {
-                      frappe.show_alert({
-                        message: __("There is no shareholders for this project yet!!"),
-                        indicator: 'red'
-                      });
-                    }
-                  });
-                }
-              },
-              function() {
-                frappe.show_alert({
-                  message: __("You have not deducted the amounts from Shareholders' accounts yet!!"),
-                  indicator: 'red'
-                });
-              })
-          }
-        }).toggleClass('btn-primary');
+      if (!frm.doc.is_amounts_deducted && frm.doc.project_shareholder.length > 0) {
+        frm.events.add_sync_button(frm);
       }
 
       if (frm.doc.is_amounts_deducted && !frm.doc.sold) {
@@ -117,11 +85,13 @@ frappe.ui.form.on('Project', {
                     end_date: data.sale_date
                   },
                   callback: function(r) {
-                    frappe.show_alert({
-                      message: __("Project has been sold to {0} successfully.",[data.buyer_name.bold()]),
-                      indicator: 'blue'
-                    });
-                    console.log(frm.doc.project_name.bold() + data.buyer_name.bold() + frm.events.fmt_money(frm, data.sale_amount));
+                    // frappe.show_alert({
+                    //   message: __("Project has been sold to {0} successfully.",[data.buyer_name.bold()]),
+                    //   indicator: 'blue'
+                    // });
+                    frappe.msgprint(__("Project {0} has been sold to {1} FOR {2}.",[frm.doc.project_name.bold(),
+                                                                                    data.buyer_name.bold(),
+                                                                                    frm.events.fmt_money(frm, data.sale_amount)]));
                   }
                 });
               }, 600);
@@ -131,6 +101,44 @@ frappe.ui.form.on('Project', {
 
       }
     }
+  },
+
+  add_sync_button: (frm) => {
+    frm.add_custom_button(__("Sync accounts"), () => {
+      if (frm.doc.total_cost > frm.doc.total_shareholding_amount) {
+        frappe.throw(__("Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
+      } else if (frm.doc.total_cost < frm.doc.total_shareholding_amount) {
+        frappe.throw(__("Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
+      } else {
+        frappe.confirm(
+          __("This will deduct shareholders' amounts from thire accounts, Are you sure!!"),
+          function() {
+            if (frm.doc.project_shareholder) {
+              frappe.xcall('shareholders_management.shareholders.doctype.project.project.submit_shareholdedrs_withdrawal', {
+                "project_name": frm.doc.project_name,
+                "start_date": frm.doc.start_date
+              }).then(r => {
+                if (r == 1) {
+                  frm.doc.is_amounts_deducted = 1;
+                  frappe.msgprint(__("Shareholders' accounts have been deducted successfully.").bold());
+                  frm.save();
+                } else {
+                  frappe.show_alert({
+                    message: __("There is no shareholders for this project yet!!"),
+                    indicator: 'red'
+                  });
+                }
+              });
+            }
+          },
+          function() {
+            frappe.show_alert({
+              message: __("You have not deducted the amounts from Shareholders' accounts yet!!"),
+              indicator: 'red'
+            });
+          })
+      }
+    }).toggleClass('btn-primary');
   },
 
   setup: function(frm) {
@@ -388,6 +396,9 @@ frappe.ui.form.on('Project', {
 
 frappe.ui.form.on("Project Shareholder", {
   project_shareholder_add: function(frm, cdt, cdn) {
+    if(frm.doc.project_shareholder.length <= 1 && !frm.is_new()){
+      frm.events.add_sync_button(frm);
+    }
     let row = frm.selected_doc;
     frm.cscript.check = function(doc) {
       if (row.shareholder_name != undefined) {
@@ -411,6 +422,9 @@ frappe.ui.form.on("Project Shareholder", {
   },
 
   project_shareholder_remove: function(frm, cdt, cdn) {
+    if(frm.doc.project_shareholder.length <= 0){
+      frm.remove_custom_button("Sync accounts");
+    }
     frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
   },
 
@@ -418,7 +432,7 @@ frappe.ui.form.on("Project Shareholder", {
     let row = frm.selected_doc;
     if (row.shareholder_name != undefined) {
       if (row.account != undefined) {
-        if (row.amount != undefined) {
+        if (row.amount != 0) {
           if (frm.doc.total_cost == 0 || frm.doc.total_cost == undefined) {
             frappe.model.set_value(cdt, cdn, "amount", 0);
             frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First!!"))

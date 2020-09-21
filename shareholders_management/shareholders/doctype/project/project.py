@@ -13,6 +13,8 @@ class Project(Document):
 		self.validate_total_cost()
 
 	def validate_total_cost(self):
+		# path = frappe.get_route()
+		# frappe.msgprint(path)
 		if self.unit_cost and self.number_of_units:
 			self.total_cost = self.unit_cost * self.number_of_units
 
@@ -67,19 +69,27 @@ def submit_shareholdedrs_deposit(project_name, company_name, company_profit, cur
 				doc.available_balance = doc.available_balance + flt(company_profit)
 				insert_into_deposit_table(doc, company_profit, end_date, "Projects proceeds", project_name, description)
 				doc.save()
-	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount", "amount_after_sale"])
+	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount", "amount_after_sale", "company_ratio"])
 	if shareholders_array:
 		for i in shareholders_array:
 			available_balance = 0
 			doc = frappe.get_doc("Shareholder Account", i.account)
 			if i.amount_after_sale > i.amount:
+				if i.company_ratio > 0:
+					description = _("In exchange for the shareholder's share of the profits of the project {0}, after deducting {1} as company ratio.").format(project_name, frappe.utils.fmt_money((i.amount_after_sale - i.amount) * (i.company_ratio / 100)))
+				else:
+					description = _("In exchange for the shareholder's share of the profits of the project {0}.").format(project_name)
 				profit = i.amount_after_sale - i.amount
-				description = _("In exchange for the shareholder's share of the profits of the project {0}.").format(project_name)
+				# description = _("In exchange for the shareholder's share of the profits of the project {0}.").format(project_name)
 				insert_into_deposit_table(doc, profit, end_date, "Projects profits", project_name, description)
 				available_balance = doc.available_balance + profit
 			elif i.amount_after_sale < i.amount:
+				if i.company_ratio > 0:
+					description = _("In exchange for the shareholder's share of the loss of the project {0}, after deducting {1} as company ratio.").format(project_name, frappe.utils.fmt_money((i.amount - i.amount_after_sale) * (i.company_ratio / 100)))
+				else:
+					description = _("In exchange for the shareholder's share of the loss of the project {0}.").format(project_name)
 				loss = i.amount - i.amount_after_sale
-				description = _("In exchange for the shareholder's share of the loss of the project {0}.").format(project_name)
+				# description = _("In exchange for the shareholder's share of the loss of the project {0}.").format(project_name)
 				insert_into_withdrawal_table(doc, loss, end_date, "Projects losses", project_name, description)
 				available_balance = doc.available_balance - loss
 			else:
