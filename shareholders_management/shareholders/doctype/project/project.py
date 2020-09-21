@@ -30,11 +30,8 @@ def get_shareholder_available_balance(account):
 @frappe.whitelist()
 def submit_shareholdedrs_withdrawal(project_name, start_date):
 	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount"])
-	# print("++++++++++++")
 	if shareholders_array:
-		# print("==============")
 		for i in shareholders_array:
-			# print(i)
 			doc = frappe.get_doc("Shareholder Account", i.account)
 			description = _("In exchange for contributing in {0}.").format(project_name)
 			insert_into_withdrawal_table(doc, i.amount, start_date, "Projects Shareholdings", project_name, description)
@@ -47,21 +44,16 @@ def submit_shareholdedrs_withdrawal(project_name, start_date):
 @frappe.whitelist()
 def submit_shareholdedrs_deposit(project_name, company_name, company_profit, currency, end_date):
 	if flt(company_profit) != 0:
-		print("company_profit != 0")
 		if flt(company_profit) > 0:
 			description = _("In exchange for the company's share of the profits of the project {0}.").format(project_name)
 		else:
 			description = _("In exchange for the company's share of the losses of the project {0}.").format(project_name)
-		company_account = frappe.get_list("Shareholder Account", filters={"shareholder_name": company_name})
+		if not frappe.db.exists({'doctype': 'Shareholder', 'shareholder_name': company_name}):
+			new_doc = frappe.new_doc("Shareholder")
+			new_doc.shareholder_name = company_name
+			new_doc.insert()
+		company_account = frappe.get_list("Shareholder Account", filters={"shareholder_name": company_name, "currency": currency})
 		if not company_account:
-			# company = frappe.db.exists({
-			#     'doctype': 'Shareholder',
-			#     'shareholder_name': company_name})
-			# if not company:
-			if not frappe.db.exists({'doctype': 'Shareholder', 'shareholder_name': company_name}):
-				new_doc = frappe.new_doc("Shareholder")
-				new_doc.shareholder_name = company_name
-				new_doc.insert()
 			new_doc = frappe.new_doc("Shareholder Account")
 			new_doc.shareholder_name = company_name
 			new_doc.available_balance = company_profit
@@ -73,7 +65,7 @@ def submit_shareholdedrs_deposit(project_name, company_name, company_profit, cur
 			for i in company_account:
 				doc = frappe.get_doc('Shareholder Account', i.name)
 				doc.available_balance = doc.available_balance + flt(company_profit)
-				insert_into_deposit_table(doc, company_profit, end_date, "Projects profits", project_name, description)
+				insert_into_deposit_table(doc, company_profit, end_date, "Projects proceeds", project_name, description)
 				doc.save()
 	shareholders_array = frappe.get_list("Project Shareholder", filters={"parent": project_name}, fields=["account", "amount", "amount_after_sale"])
 	if shareholders_array:
@@ -93,7 +85,7 @@ def submit_shareholdedrs_deposit(project_name, company_name, company_profit, cur
 			else:
 				available_balance = doc.available_balance
 			description = _("In exchange for shareholding in the project {0}.").format(project_name)
-			insert_into_deposit_table(doc, i.amount, end_date, "Projects profits", project_name, description)
+			insert_into_deposit_table(doc, i.amount, end_date, "Projects proceeds", project_name, description)
 			doc.available_balance = available_balance + i.amount
 			doc.save()
 

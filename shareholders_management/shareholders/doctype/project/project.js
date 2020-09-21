@@ -181,17 +181,26 @@ frappe.ui.form.on('Project', {
   },
 
   ratio_type: (frm, cdt, cdn) => {
-    for (var i = 0; i < frm.doc.project_shareholder.length; i++) {
-      var ratio = 0;
-      if (frm.doc.ratio_type == "Stock") {
-        ratio = frm.doc.project_shareholder[i].amount / frm.doc.stock_value;
-      } else {
-        ratio = (frm.doc.project_shareholder[i].amount / frm.doc.total_cost) * 100;
-      }
-      frm.events.ratio_label(frm);
-      frm.doc.project_shareholder[i].ratio = ratio
-      frm.refresh_fields("project_shareholder");
+    if (frm.doc.ratio_type == "Stock") {
+      frm.events.get_project_settings(frm, "stock");
     }
+    else {
+      frm.doc.stock_value = undefined;
+      frm.refresh_fields("stock_value");
+    }
+    setTimeout(function(){
+      for (var i = 0; i < frm.doc.project_shareholder.length; i++) {
+        var ratio = 0;
+        if (frm.doc.ratio_type == "Stock") {
+          ratio = frm.doc.project_shareholder[i].amount / frm.doc.stock_value;
+        } else {
+          ratio = (frm.doc.project_shareholder[i].amount / frm.doc.total_cost) * 100;
+        }
+        frm.events.ratio_label(frm);
+        frm.doc.project_shareholder[i].ratio = ratio
+        frm.refresh_fields("project_shareholder");
+      }
+    }, 100);
   },
 
   calc_ratio: (frm, sale_amount) => {
