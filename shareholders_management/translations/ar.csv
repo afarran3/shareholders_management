@@ -30,7 +30,7 @@ Doctype: Project,Project,مشروع
 ,Sync accounts,مزامنة حسابات المساهمين
 ,"Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!","يرجى إضافة مساهمين آخرين أو زيادة مبالغ المساهمين الحاليين حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة للمشروع!!"
 ,"Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!","يرجى حذف بعض المساهمين أو تقليل المبالغ المساهم بها حتى يصبح إجمالي مبالغ المساهمين مساوياً لإجمالي التكلفة!!"
-,"This will deduct shareholders' amounts from thire accounts, Are you sure!!","سوف يتم خصم المبالغ من حسابات المساهمين, هل تريد التقدم ؟!!"
+,"This will deduct shareholders' amounts from thire accounts, Are you sure!!","سوف يتم خصم المبالغ من حسابات المساهمين، هل تريد التقدم ؟!!"
 ,"Shareholders' accounts have been deducted successfully.","تم خصم المبالغ من حسابات المساهمين بنجاح."
 ,"There is no shareholders for this project yet!!","ليس هناك مساهمين في هذا المشروع بعد."
 ,"You have not deducted the amounts from Shareholders' accounts yet!!","لم يتم خصم المبالغ من حسابات المساهمين بعد."
@@ -42,7 +42,7 @@ Doctype: Project,Project,مشروع
 ,Percentage,مئوية
 ,Number of stocks,عدد الأسهم
 ,"Percentage ratio (%)","النسبة المئوية (%)"
-,"There is no stock value for {0} currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم للعملة {0}, إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
+,"There is no stock value for {0} currency, to set it go to 'Project Settings'!!","لم تقم بإعداد قيمة السهم للعملة {0}، إذهب إلى صفحة 'إعدادات المشروع' لإضافتها!!"
 ,"Please set a 'stock values' in 'Project Settings' first!!","يرجى إعداد 'قيمة السهم' في صفحة 'إعدادات المشاريع' أولاً!!"
 ,"This project company is not the same company in 'Project Settings', do you want to change project company From {0} To {1}","الشركة المحفوظة لهذا المشروع ليست نفسها الموجودة في 'إعدادات المشروع' هل تريد تغيير شركة المشروع من {0} إلى {1} ؟!!"
 ,"Project Company changed successfully.","تم تغيير الشركة بنجاح."
@@ -104,7 +104,7 @@ Doctype: Shareholder Account,Shareholder Account,حساب المساهم
 ,Projects Shareholdings,مساهمة في مشاريع
 ,Projects losses,خسائر مشاريع
 ,Is Company,المالك شركة
-,"You have exceeded the available balance, you can't withdraw more than {0}!!","لقد تجاوزت الرصيد المتاح, لا يمكنك سحب أكثر من {0}!!"
+,"You have exceeded the available balance, you can't withdraw more than {0}!!","لقد تجاوزت الرصيد المتاح، لا يمكنك سحب أكثر من {0}!!"
 ,"This date {0} has not come yet!!","لا يمكنك إختيار تاريخ مستقبلي لم يأتي بعد!!"
 ,"{0} already has account in {1} currency!!","{0} لديه حالياً حساباً بالعملة {1}!!"
 ,"Balance can not be less than ZERO!!","لا يمكن أن يكون الرصيد أقل من صفر (بالسالب)!!"
@@ -122,3 +122,21 @@ Doctype: Project Settings,Project Settings,إعدادات المشاريع
 ,Units Types,أنواع الوحدات
 ,Move,تحريك
 ,Shareholders Accounts,حسابات المساهمين
+
+
+Report: Account statement,Account statement,كشف حساب
+,Operation Type,نوع العملية
+,From Date,من تاريخ
+,To Date,إلى تاريخ
+,All Operations,جميع العمليات
+,Deposit,إيداع
+,Withdrawal,سحب
+,"'From Date' cannot be greater than 'To Date'","'من تاريخ' لا يمكن أن يكون أكبر من 'إلى تاريخ'!!"
+,Operation Purpose,الغرض من العملية
+,Projects profits,أرباح مشاريع
+,Projects proceeds,عائدات مشاريع
+,Normal,عادي
+,Projects Shareholdings,مساهمة في مشاريع
+,Projects losses,خسائر مشاريع
+,Date,التاريخ
+,Note,ملاحظات
