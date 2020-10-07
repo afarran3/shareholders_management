@@ -12,17 +12,19 @@ import os
 
 
 def execute(filters=None):
-    validate_filters(filters)
+    # validate_filters(filters)
+    filters = frappe._dict(filters or {})
     columns = get_columns(filters)
     data = get_data(filters)
     return columns, data
 
 
-def validate_filters(filters):
-    filters.from_date = getdate(filters.from_date)
-    filters.to_date = getdate(filters.to_date)
-    if filters.from_date > filters.to_date:
-        frappe.throw(_("'From Date' cannot be greater than 'To Date'"))
+# def validate_filters(filters):
+#     filters.from_date = getdate(filters.from_date)
+#     filters.to_date = getdate(filters.to_date)
+#     if filters.from_date and filters.to_date:
+#         if filters.from_date > filters.to_date:
+#             frappe.throw(_("'From Date' cannot be greater than 'To Date'"))
 
 
 def get_columns(filters):

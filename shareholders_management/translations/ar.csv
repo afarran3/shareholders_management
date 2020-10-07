@@ -125,13 +125,15 @@ Doctype: Project Settings,Project Settings,إعدادات المشاريع
 
 
 Report: Account statement,Account statement,كشف حساب
+,Account Statement,كشف حساب
 ,Operation Type,نوع العملية
 ,From Date,من تاريخ
 ,To Date,إلى تاريخ
 ,All Operations,جميع العمليات
 ,Deposit,إيداع
 ,Withdrawal,سحب
-,"'From Date' cannot be greater than 'To Date'","'من تاريخ' لا يمكن أن يكون أكبر من 'إلى تاريخ'!!"
+,"You can not enter a date after {0}!!","لا يمكنك إختيار تاريخ يأتي بعد {0}!!"
+,"You can not enter a date before {0}!!","لا يمكنك إختيار تاريخ يكون قبل {0}!!"
 ,Operation Purpose,الغرض من العملية
 ,Projects profits,أرباح مشاريع
 ,Projects proceeds,عائدات مشاريع

@@ -1,7 +1,8 @@
 // Copyright (c) 2016, Ahmad Al-Farran and contributors
 // For license information, please see license.txt
 /* eslint-disable */
-
+var from_date = undefined;
+var to_date = undefined;
 frappe.query_reports["Account statement"] = {
 	"filters": [
 		{
@@ -39,8 +40,10 @@ frappe.query_reports["Account statement"] = {
 				}
 				frappe.model.with_doc("Shareholder Account", shareholder_account, function(r) {
 					var sa = frappe.model.get_doc("Shareholder Account", shareholder_account);
-					frappe.query_report.set_filter_value("from_date", moment(sa.creation).format("YYYY-MM-DD"));
-					frappe.query_report.set_filter_value("to_date", moment(sa.modified).format("YYYY-MM-DD"));
+					from_date = moment(sa.creation).format("YYYY-MM-DD");
+					frappe.query_report.set_filter_value("from_date", from_date);
+					to_date = moment(sa.modified).format("YYYY-MM-DD")
+					frappe.query_report.set_filter_value("to_date", to_date);
 					frappe.query_report.set_filter_value("currency", sa.currency);
 				});
 			},
@@ -50,18 +53,43 @@ frappe.query_reports["Account statement"] = {
 			"fieldname": "operation",
 			"label": __("Operation Type"),
 			"fieldtype": "Select",
-			"options":__("All Operations") + "\n" + __("Deposit") + "\n" + __("Withdrawal"),
+			"options": __("All Operations") + "\n" + __("Deposit") + "\n" + __("Withdrawal"),
 			"default": __("All Operations")
 		},
 		{
 			"fieldname": "from_date",
 			"label": __("From Date"),
 			"fieldtype": "Date",
+			"on_change": function(query_report) {
+				var f_date = query_report.get_filter_value("from_date");
+				var t_date = query_report.get_filter_value("to_date");
+				if (!f_date) {
+					return;
+				}
+				if (f_date > t_date) {
+					frappe.query_report.set_filter_value("from_date", from_date);
+					frappe.throw(__("You can not enter a date after {0}!!",[t_date]))
+
+				}
+				frappe.query_report.refresh();
+			},
 		},
 		{
 			"fieldname": "to_date",
 			"label": __("To Date"),
 			"fieldtype": "Date",
+			"on_change": function(query_report) {
+				var f_date = query_report.get_values().from_date;
+				var t_date = query_report.get_values().to_date;
+				if (!t_date) {
+					return;
+				}
+				if (t_date < f_date) {
+					frappe.query_report.set_filter_value("to_date", to_date);
+					frappe.throw(__("You can not enter a date before {0}!!",[f_date]))
+				}
+				frappe.query_report.refresh();
+			},
 		},
 		{
 			"fieldname": "currency",
