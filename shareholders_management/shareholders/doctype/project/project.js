@@ -5,6 +5,7 @@ var valedate_sale_date = 0;
 frappe.ui.form.on('Project', {
   refresh: function(frm, doc, cdt, cdn) {
     $('*[data-fieldname="project_shareholder"]').find('.grid-remove-rows').show();
+    $('*[data-fieldname="project_shareholder"]').find('.grid-remove-all-rows').hide();
     $('*[data-fieldname="project_shareholder"]').find('.grid-add-row').show();
     frm.events.get_project_settings(frm, "all");
     if(frm.doc.docstatus){
