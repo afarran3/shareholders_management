@@ -38,12 +38,21 @@ frappe.query_reports["Account statement"] = {
 					frappe.query_report.set_filter_value("currency", "");
 					return;
 				}
+				frappe.call({
+					method: "shareholders_management.shareholders.report.account_statement.account_statement.all_operations_dates",
+					args: {
+						parent: query_report.get_filter_value("shareholder_account"),
+						operation: query_report.get_filter_value("operation")
+					},
+					callback: function(r) {
+						from_date = r.message[0].from_date;
+						frappe.query_report.set_filter_value("from_date", from_date);
+						to_date = r.message[0].to_date;
+						frappe.query_report.set_filter_value("to_date", to_date);
+					}
+				});
 				frappe.model.with_doc("Shareholder Account", shareholder_account, function(r) {
 					var sa = frappe.model.get_doc("Shareholder Account", shareholder_account);
-					from_date = moment(sa.creation).format("YYYY-MM-DD");
-					frappe.query_report.set_filter_value("from_date", from_date);
-					to_date = moment(sa.modified).format("YYYY-MM-DD")
-					frappe.query_report.set_filter_value("to_date", to_date);
 					frappe.query_report.set_filter_value("currency", sa.currency);
 				});
 			},
@@ -54,7 +63,22 @@ frappe.query_reports["Account statement"] = {
 			"label": __("Operation Type"),
 			"fieldtype": "Select",
 			"options": __("All Operations") + "\n" + __("Deposit") + "\n" + __("Withdrawal"),
-			"default": __("All Operations")
+			"default": __("All Operations"),
+			"on_change": function(query_report) {
+				frappe.call({
+					method: "shareholders_management.shareholders.report.account_statement.account_statement.all_operations_dates",
+					args: {
+						parent: query_report.get_filter_value("shareholder_account"),
+						operation: query_report.get_filter_value("operation")
+					},
+					callback: function(r) {
+						from_date = r.message[0].from_date;
+						frappe.query_report.set_filter_value("from_date", from_date);
+						to_date = r.message[0].to_date;
+						frappe.query_report.set_filter_value("to_date", to_date);
+					}
+				});
+			}
 		},
 		{
 			"fieldname": "from_date",
@@ -64,12 +88,12 @@ frappe.query_reports["Account statement"] = {
 				var f_date = query_report.get_filter_value("from_date");
 				var t_date = query_report.get_filter_value("to_date");
 				if (!f_date) {
+					frappe.query_report.refresh();
 					return;
 				}
 				if (f_date > t_date) {
 					frappe.query_report.set_filter_value("from_date", from_date);
 					frappe.throw(__("You can not enter a date after {0}!!",[t_date]))
-
 				}
 				frappe.query_report.refresh();
 			},
@@ -82,6 +106,7 @@ frappe.query_reports["Account statement"] = {
 				var f_date = query_report.get_values().from_date;
 				var t_date = query_report.get_values().to_date;
 				if (!t_date) {
+					frappe.query_report.refresh();
 					return;
 				}
 				if (t_date < f_date) {

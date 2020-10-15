@@ -114,3 +114,31 @@ def get_data(filters):
                 data.append({"date": i.op_date, "operation": opr, "amount": i.amount,
                              "purpose": _(i.op_type), "description": i.description})
     return data
+
+@frappe.whitelist()
+def all_operations_dates(parent, operation):
+    dates = []
+    if operation == _("Deposit"):
+        data = frappe.db.sql("""
+        SELECT min(deposit_date) as from_date, max(deposit_date) as to_date
+        FROM `tabDeposit`
+        WHERE parent = %(parent)s""", {"parent": parent}, as_dict=True)
+    elif operation == _("Withdrawal"):
+        data = frappe.db.sql("""
+        SELECT min(withdrawal_date) as from_date, max(withdrawal_date) as to_date
+        FROM `tabWithdrawal`
+        WHERE parent = %(parent)s""", {"parent": parent}, as_dict=True)
+    else:
+        data = frappe.db.sql("""
+        SELECT min(o_dates.from_date) as from_date, max(o_dates.to_date) as to_date
+        FROM (
+        SELECT min(deposit_date) as from_date, max(deposit_date) as to_date
+        FROM `tabDeposit`
+        WHERE parent = %(parent)s
+        UNION
+        SELECT min(withdrawal_date) as from_date, max(withdrawal_date) as to_date
+        FROM `tabWithdrawal`
+        WHERE parent = %(parent)s) as o_dates""", {"parent": parent}, as_dict=True)
+    for i  in data:
+        dates.append({"from_date": i.from_date, "to_date": i.to_date})
+    return dates
