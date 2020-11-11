@@ -343,6 +343,7 @@ frappe.ui.form.on('Project', {
           function() {
             frm.doc.company_name = company_name;
             frm.refresh_fields("company_name");
+            frm.save();
             frappe.show_alert({
               message: __("Project Company changed successfully."),
               indicator: 'green'
