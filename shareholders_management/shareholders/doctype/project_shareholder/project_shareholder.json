@@ -7,11 +7,12 @@
  "field_order": [
   "shareholder_name",
   "account",
-  "amount_after_sale",
-  "column_break_4",
   "amount",
+  "column_break_4",
+  "amount_after_sale",
   "ratio",
   "company_ratio",
+  "net_pl",
   "check",
   "description_section",
   "description"
@@ -22,16 +23,17 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "Name",
+   "label": "Shareholder's Name",
    "options": "Shareholder",
    "reqd": 1
   },
   {
+   "columns": 1,
    "fieldname": "account",
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "Account",
+   "label": "Shareholder's Account",
    "options": "Shareholder Account",
    "reqd": 1
   },
@@ -42,11 +44,12 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "in_preview": 1,
-   "label": "Amount",
+   "label": "Shareholding Amount",
    "precision": "4",
    "reqd": 1
   },
   {
+   "columns": 1,
    "default": "0",
    "fieldname": "ratio",
    "fieldtype": "Data",
@@ -76,23 +79,33 @@
    "label": "Check Amount"
   },
   {
+   "columns": 1,
    "description": "The net of what the shareholder worths after the sale and after deducting the company ratio.",
    "fieldname": "amount_after_sale",
    "fieldtype": "Currency",
-   "label": "Amount After Sale",
+   "label": "Amount After Sale + Profit",
    "precision": "4",
    "read_only": 1
   },
   {
+   "columns": 1,
    "default": "0",
    "fieldname": "company_ratio",
    "fieldtype": "Percent",
    "in_list_view": 1,
    "label": "Company Ratio"
+  },
+  {
+   "fieldname": "net_pl",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Net Profit\\Loss",
+   "precision": "4",
+   "read_only": 1
   }
  ],
  "istable": 1,
- "modified": "2020-09-22 21:16:03.223175",
+ "modified": "2020-12-06 22:28:53.266872",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project Shareholder",

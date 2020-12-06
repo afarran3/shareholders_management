@@ -73,6 +73,8 @@ frappe.ui.form.on('Project', {
               frm.doc.end_date = data.sale_date;
               frm.doc.buyer_name = data.buyer_name;
               frm.doc.sale_amount = data.sale_amount;
+              frm.doc.unit_sale_amount = data.sale_amount / frm.doc.number_of_units;
+              console.log(data.sale_amount / frm.doc.number_of_units);
               frm.events.calc_ratio(frm, data.sale_amount);
               frm.save('Submit');
               setTimeout(function(){
@@ -222,18 +224,24 @@ frappe.ui.form.on('Project', {
         company_profit = ((ps[i].company_ratio / 100) * ((profit / stock_number) * ps[i].ratio));
         frm.doc.company_profit = frm.doc.company_profit + company_profit;
         ps[i].amount_after_sale = (((profit / stock_number) * ps[i].ratio) + ps[i].amount) - company_profit;
+        ps[i].net_pl = ((profit / stock_number) * ps[i].ratio) - company_profit;
       }
+      frm.doc.net_pl = sale_amount - frm.doc.company_profit;
       frm.refresh_fields("project_shareholder");
       frm.refresh_fields("company_profit");
+      frm.refresh_fields("net_pl");
     }
     else {
       for (var i = 0; i < ps.length; i++) {
         company_profit = ((ps[i].company_ratio / 100) * ((ps[i].ratio / 100) * profit));
         frm.doc.company_profit = frm.doc.company_profit + company_profit;
         ps[i].amount_after_sale = (((ps[i].ratio / 100) * profit) + ps[i].amount) - company_profit;
+        ps[i].net_pl = ((ps[i].ratio / 100) * profit) - company_profit;
       }
+      frm.doc.net_pl = sale_amount - frm.doc.company_profit;
       frm.refresh_fields("project_shareholder");
       frm.refresh_fields("company_profit");
+      frm.refresh_fields("net_pl");
     }
   },
 
