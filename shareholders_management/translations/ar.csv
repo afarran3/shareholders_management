@@ -11,7 +11,8 @@ Doctype: Project,Project,مشروع
 ,Shareholder's Name,إسم المساهم
 ,Shareholder's Account,رقم الحساب
 ,Shareholding Amount,المبلغ المُساهم به
-,"Net Profit\Loss",صافي الربح/الخسارة
+,"Net Profit\Loss",صافي الربح/الخسارة للمساهمين
+,"Net Sale Profit\Loss",صافي المبيع مع الربح للمساهمين
 ,Sale Amount for Unit,مبلغ البيع للوحدة
 ,Unit Type,نوع الوحدة
 ,Number of Units,عدد الوحدات
@@ -80,7 +81,7 @@ Doctype: Project,Project,مشروع
 ,Remaining Amount,المبلغ المتبقي للمساهمة به
 ,"In exchange for the company's share of the losses of the project {0}.","مقابل نصيب الشركة من خسائر المشروع: {0}."
 ,Shareholder Ratio,نسبة المساهمة
-,Company Ratio,نسبة المكتب من ربح المساهم
+,Company Ratio,نسبة المكتب
 ,"The net of what the shareholder worths after the sale and after deducting the company ratio.","صافي ما يستحقه المساهم بعد البيع وبعد خصم نسبة الشركة."
 ,"Project has been sold to {0} successfully.","تم بيع المشروع لـ {0} بنجاح."
 ,"Project {0} has been sold to {1} FOR {2}.","تم بيع المشروع {0} للمشتري {1} وذلك مقابل: {2}."

@@ -52,7 +52,7 @@
    "columns": 1,
    "default": "0",
    "fieldname": "ratio",
-   "fieldtype": "Data",
+   "fieldtype": "Percent",
    "in_list_view": 1,
    "in_preview": 1,
    "label": "Shareholder Ratio",
@@ -105,7 +105,7 @@
   }
  ],
  "istable": 1,
- "modified": "2020-12-06 22:28:53.266872",
+ "modified": "2020-12-10 21:41:16.204126",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project Shareholder",

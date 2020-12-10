@@ -211,12 +211,12 @@
    "description": "Net Profit or Loss after deducted company's ratio.",
    "fieldname": "net_pl",
    "fieldtype": "Currency",
-   "label": "Net Profit\\Loss",
+   "label": "Net Sale Profit\\Loss",
    "precision": "4",
    "read_only": 1
   }
  ],
- "modified": "2020-12-06 22:52:08.249033",
+ "modified": "2020-12-10 21:51:32.542179",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",
