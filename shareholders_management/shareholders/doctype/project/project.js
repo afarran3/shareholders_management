@@ -108,10 +108,15 @@ frappe.ui.form.on('Project', {
 
   add_sync_button: (frm) => {
     frm.add_custom_button(__("Sync accounts"), () => {
-      if (frm.doc.total_cost > frm.doc.total_shareholding_amount) {
+      // console.log(frm.get_field('total_cost').get_value() + "=" + frm.get_field('total_shareholding_amount').get_value());
+      // if (frm.doc.total_cost > frm.doc.total_shareholding_amount) {
+      if (frm.get_field('total_cost').get_value() > frm.get_field('total_shareholding_amount').get_value()) {
         frappe.throw(__("Please add other shareholders or increase ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
-      } else if (frm.doc.total_cost < frm.doc.total_shareholding_amount) {
+        return;
+      // } else if (frm.doc.total_cost < frm.doc.total_shareholding_amount) {
+      } else if (frm.get_field('total_cost').get_value() < frm.get_field('total_shareholding_amount').get_value()) {
         frappe.throw(__("Please delete some shareholders or decrease ratios of the current shareholders' so that the total shareholding amounts equals the total cost of the project!!"))
+        return;
       } else {
         frappe.confirm(
           __("This will deduct shareholders' amounts from thire accounts, Are you sure!!"),
@@ -405,30 +410,31 @@ frappe.ui.form.on('Project', {
 });
 
 frappe.ui.form.on("Project Shareholder", {
+  check: (frm, cdt, cdn) => {
+    let row = frm.selected_doc;
+    if (row.shareholder_name != undefined) {
+      if (row.account != undefined) {
+        frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
+          "account": row.account
+        }).then(r => {
+          var available_balance = r;
+          frappe.msgprint(__("{0}'s available balance = {1}.",
+            [row.shareholder_name.bold(), frm.events.fmt_money(frm, available_balance)]));
+        });
+      } else {
+        frappe.model.set_value(cdt, cdn, "amount", 0);
+        frappe.throw(__("Please select an account first!!"))
+      }
+    } else {
+      frappe.model.set_value(cdt, cdn, "amount", 0);
+      frappe.throw(__("Please select a shareholder first!!"))
+    }
+  },
+
   project_shareholder_add: function(frm, cdt, cdn) {
     if(frm.doc.project_shareholder.length <= 1 && !frm.is_new()){
       frm.events.add_sync_button(frm);
     }
-    let row = frm.selected_doc;
-    frm.cscript.check = function(doc) {
-      if (row.shareholder_name != undefined) {
-        if (row.account != undefined) {
-          frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
-            "account": row.account
-          }).then(r => {
-            var available_balance = r;
-            frappe.msgprint(__("{0}'s available balance = {1}.",
-              [row.shareholder_name.bold(), frm.events.fmt_money(frm, available_balance)]));
-          });
-        } else {
-          frappe.model.set_value(cdt, cdn, "amount", 0);
-          frappe.throw(__("Please select an account first!!"))
-        }
-      } else {
-        frappe.model.set_value(cdt, cdn, "amount", 0);
-        frappe.throw(__("Please select a shareholder first!!"))
-      }
-    };
   },
 
   project_shareholder_remove: function(frm, cdt, cdn) {
