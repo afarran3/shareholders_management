@@ -405,9 +405,69 @@ frappe.ui.form.on('Project', {
       currency: frm.doc.currency
     });
     return formatter.format(amount).bold();
+  },
+
+  calculate_amount_and_ratio: (frm, current_field, cdt, cdn) => {
+    let row = frm.selected_doc;
+    var field_value = current_field == "ratio" ? row.ratio : row.amount;
+    var second_field = current_field == "ratio" ? "amount" : "ratio";
+    var second_value = current_field == "ratio" ? row.amount : row.ratio;
+    if (row.shareholder_name != undefined) {
+      if (row.account != undefined) {
+        if (field_value != 0) {
+          if (frm.doc.total_cost == 0 || frm.doc.total_cost == undefined) {
+            frappe.model.set_value(cdt, cdn, current_field, 0);
+            frappe.model.set_value(cdt, cdn, second_field, 0);
+            frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First!!"))
+          } else {
+            frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
+              "account": row.account
+            }).then(r => {
+              var available_balance = r;
+              if (available_balance < row.amount) {
+                frappe.model.set_value(cdt, cdn, current_field, 0);
+                frappe.model.set_value(cdt, cdn, second_field, 0);
+                frappe.throw(__("{0} does not have {1} in his account!! his available balance = {2}.",
+                  [row.shareholder_name.bold(), frm.events.fmt_money(frm, row.amount), frm.events.fmt_money(frm, available_balance)]));
+              } else if (current_field == "amount") {
+                var ratio = 0;
+                if (frm.doc.ratio_type == "Stock") {
+                  ratio = row.amount / frm.doc.stock_value;
+                } else {
+                  ratio = (row.amount / frm.doc.total_cost) * 100;
+                }
+                if (ratio != second_value) {
+                  frappe.model.set_value(cdt, cdn, second_field, ratio);
+                  frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
+                }
+              } else if (current_field == "ratio") {
+                var amount = 0;
+                if (frm.doc.ratio_type == "Stock") {
+                  amount = row.ratio * frm.doc.stock_value;
+                } else {
+                  amount = (row.ratio / 100) * frm.doc.total_cost;
+                }
+                if (amount != second_value) {
+                  frappe.model.set_value(cdt, cdn, second_field, amount);
+                  frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
+                }
+              }
+            });
+          }
+        }
+      } else if (field_value != 0) {
+        frappe.model.set_value(cdt, cdn, current_field, 0);
+        frappe.throw(__("Please select an account first!!"))
+      }
+    } else if (field_value != 0) {
+      frappe.model.set_value(cdt, cdn, current_field, 0);
+      frappe.throw(__("Please select a shareholder first!!"))
+    }
   }
 
 });
+
+
 
 frappe.ui.form.on("Project Shareholder", {
   check: (frm, cdt, cdn) => {
@@ -445,43 +505,54 @@ frappe.ui.form.on("Project Shareholder", {
   },
 
   amount: (frm, cdt, cdn) => {
-    let row = frm.selected_doc;
-    if (row.shareholder_name != undefined) {
-      if (row.account != undefined) {
-        if (row.amount != 0) {
-          if (frm.doc.total_cost == 0 || frm.doc.total_cost == undefined) {
-            frappe.model.set_value(cdt, cdn, "amount", 0);
-            frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First!!"))
-          } else {
-            frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
-              "account": row.account
-            }).then(r => {
-              var available_balance = r;
-              if (available_balance < row.amount) {
-                var amount = row.amount;
-                frappe.model.set_value(cdt, cdn, "amount", 0);
-                frappe.throw(__("{0} does not have {1} in his account!! his available balance = {2}.",
-                  [row.shareholder_name.bold(), frm.events.fmt_money(frm, amount), frm.events.fmt_money(frm, available_balance)]));
-              } else {
-                var ratio = 0
-                if (frm.doc.ratio_type == "Stock") {
-                  ratio = row.amount / frm.doc.stock_value;
-                } else {
-                  ratio = (row.amount / frm.doc.total_cost) * 100;
-                }
-                frappe.model.set_value(cdt, cdn, "ratio", ratio);
-                frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
-              }
-            });
-          }
-        }
-      } else if (row.amount != 0) {
-        frappe.model.set_value(cdt, cdn, "amount", 0);
-        frappe.throw(__("Please select an account first!!"))
-      }
-    } else if (row.amount != 0) {
-      frappe.model.set_value(cdt, cdn, "amount", 0);
-      frappe.throw(__("Please select a shareholder first!!"))
-    }
+    frm.events.calculate_amount_and_ratio(frm, "amount", cdt, cdn);
+    // let row = frm.selected_doc;
+    // if (row.shareholder_name != undefined) {
+    //   if (row.account != undefined) {
+    //     if (row.amount != 0) {
+    //       if (frm.doc.total_cost == 0 || frm.doc.total_cost == undefined) {
+    //         frappe.model.set_value(cdt, cdn, "amount", 0);
+    //         frappe.throw(__("Please insert Unit Type, Unit Cost and Number of Units First!!"))
+    //       } else {
+    //         frappe.xcall('shareholders_management.shareholders.doctype.project.project.get_shareholder_available_balance', {
+    //           "account": row.account
+    //         }).then(r => {
+    //           var available_balance = r;
+    //           if (available_balance < row.amount) {
+    //             var amount = row.amount;
+    //             frappe.model.set_value(cdt, cdn, "amount", 0);
+    //             frappe.throw(__("{0} does not have {1} in his account!! his available balance = {2}.",
+    //               [row.shareholder_name.bold(), frm.events.fmt_money(frm, amount), frm.events.fmt_money(frm, available_balance)]));
+    //           } else {
+    //             var ratio = 0
+    //             if (frm.doc.ratio_type == "Stock") {
+    //               ratio = row.amount / frm.doc.stock_value;
+    //             } else {
+    //               ratio = (row.amount / frm.doc.total_cost) * 100;
+    //             }
+    //             frappe.model.set_value(cdt, cdn, "ratio", ratio);
+    //             frm.events.get_total_shareholdering_amount(frm, cdt, cdn);
+    //           }
+    //         });
+    //       }
+    //     }
+    //   } else if (row.amount != 0) {
+    //     frappe.model.set_value(cdt, cdn, "amount", 0);
+    //     frappe.throw(__("Please select an account first!!"))
+    //   }
+    // } else if (row.amount != 0) {
+    //   frappe.model.set_value(cdt, cdn, "amount", 0);
+    //   frappe.throw(__("Please select a shareholder first!!"))
+    // }
+    // console.log("amount");
   },
+
+  ratio: (frm, cdt, cdn) => {
+    frm.events.calculate_amount_and_ratio(frm, "ratio", cdt, cdn);
+    // console.log("ratio");
+    // let row = frm.selected_doc;
+    // if (row.ratio != 0) {
+    //   frappe.model.set_value(cdt, cdn, "amount", 121);
+  }
+
 });

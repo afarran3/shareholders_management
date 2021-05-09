@@ -196,6 +196,7 @@
    "fieldname": "remaining_amount",
    "fieldtype": "Currency",
    "label": "Remaining Amount",
+   "precision": "6",
    "read_only": 1
   },
   {
@@ -216,7 +217,7 @@
    "read_only": 1
   }
  ],
- "modified": "2020-12-10 21:51:32.542179",
+ "modified": "2021-05-07 03:26:16.590017",
  "modified_by": "Administrator",
  "module": "Shareholders",
  "name": "Project",
